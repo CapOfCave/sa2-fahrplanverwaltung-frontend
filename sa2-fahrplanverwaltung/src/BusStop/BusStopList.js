@@ -12,6 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import CreateBusStop from "./CreateBusStop";
 import { Button } from "@mui/material";
 import Header from "../layout/Header";
+import DeleteBusStop from "./DeleteBusStop";
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 170 },
@@ -38,6 +39,7 @@ export default function BusStopList({isStaff}) {
   const [displayedBusStops, setDisplayedBusStops] = useState(busStops);
   const [editedBusStop, setEditedBusStop] = useState(undefined);
   const [showDialog, setShowDialog] = useState(false);
+  const [deleteBusStopDialog, setDeleteBusStopDialog] = useState(false);
 
   function newBusStop() {
     setShowDialog(true);
@@ -45,11 +47,18 @@ export default function BusStopList({isStaff}) {
 
   function closeDialog() {
     setShowDialog(false);
+    setDeleteBusStopDialog(false)
+    setEditedBusStop(undefined);
   }
 
   function editBusStop(stop) {
     setEditedBusStop(stop.name)
     setShowDialog(true);
+  }
+
+  function deleteBusStop(stop){
+    setEditedBusStop(stop.name)
+    setDeleteBusStopDialog(true)
   }
 
   console.log(busStops.toString());
@@ -93,10 +102,10 @@ export default function BusStopList({isStaff}) {
                   <TableCell>{stop.id}</TableCell>
                   <TableCell>{stop.name}</TableCell>
                   { isStaff &&
-                      <TableCell><Button variant="outlined" onClick={(event) => editBusStop(stop.name)} >Bearbeiten</Button></TableCell>
+                      <TableCell><Button variant="outlined" onClick={(event) => editBusStop(stop)} >Bearbeiten</Button></TableCell>
                   }
                   { isStaff &&
-                  <TableCell><button>Löschen</button></TableCell>
+                  <TableCell><Button onClick={(event) => deleteBusStop(stop)}>Löschen</Button></TableCell>
                   }
                 </TableRow>
               ))
@@ -117,6 +126,7 @@ export default function BusStopList({isStaff}) {
         Neue Haltestelle anlegen
       </Button>
       <CreateBusStop open={showDialog} name={editedBusStop} handleClose={() => closeDialog()} ></CreateBusStop>
+      <DeleteBusStop open={deleteBusStopDialog} name={editedBusStop} handleClose={() => closeDialog()}></DeleteBusStop>
     </Paper>
     </div>
   );
