@@ -1,4 +1,5 @@
 import { AppBar, Button, Toolbar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const headersData = [
     {
@@ -13,20 +14,58 @@ const headersData = [
       label: "Haltestellen",
       href: "/busstops",
     },
-    {
-      label: "Buslinien verwalten",
-      href: "/buslines/manage",
-    },
   ];
 
 export default function Header({isStaff}){
 
-    isStaff=false;
+    let navigate = useNavigate();
+    isStaff=true;
 
-    const getMenuButtons = () => {
+    function handleClick(label){
+      switch (label){
+        case "Fahrplanauskunft":
+          //doSomething
+        break;
+        case "Buslinien":
+          //doSomething
+        break;
+        case "Haltestellen":
+          navigate("/busstops");
+        break;
+        case "Buslinien verwalten":
+          //doSomething
+        break;
+        case "Fahrpläne verwalten":
+          navigate("/timetables/manage");
+        break;
+        case "Bushaltestellen verwalten":
+          //doSomething
+        break;
+        default:
+          //default
+        break;
+      }
+    }
+    
+
+    function getMenuButtons () {
+      if(isStaff && headersData.length<4){
+        headersData.push({
+          label: "Buslinien verwalten",
+          href: "/buslines/manage",
+        },
+        {
+          label: "Fahrpläne verwalten",
+          href: "/timetables/manage",
+        },
+        {
+          label: "Bushaltestellen verwalten",
+          href: "/busstops/manage",
+        })
+      }
         return headersData.map(({ label, href }) => {
           return (
-            <Button
+            <Button onClick={(event) => handleClick(label)}
               {...{
                 key: label,
                 color: "inherit",
@@ -45,10 +84,8 @@ export default function Header({isStaff}){
             <AppBar position="static">
                 <Toolbar>
                     {getMenuButtons()}
-                    <Button>Fahrplanauskunft</Button>
-                    <Button>Buslinien</Button>
-                    <Button>Haltestellen</Button>
-                    <Button rendered="#{isStaff}">Haltestellen verwalten</Button></Toolbar></AppBar>
+                </Toolbar>
+            </AppBar>
         </header>
     );
 }

@@ -11,15 +11,22 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import CreateBusStop from "./CreateBusStop";
 import { Button } from "@mui/material";
+import Header from "../layout/Header";
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 170 },
   { id: 'name', label: 'Name', minWidth: 170 },
-  { id: 'modify', label: 'Bearbeiten', minWidth: 100 },
-  { id: 'delete', label: 'Löschen', minWidth: 100 },
 ];
-export default function BusStopList() {
+export default function BusStopList({isStaff}) {
 
+  isStaff=true;
+
+  if(isStaff && columns.length<3){
+    columns.push(
+      { id: 'modify', label: 'Bearbeiten', minWidth: 100 },
+      { id: 'delete', label: 'Löschen', minWidth: 100 },)
+
+  }
   //var busStops = apiService().apiGetAllBusStops();
   var busStops = [
     { "id": 1, "name": "Abbey Road" }, { "id": 2, "name": "Barn Street" },
@@ -29,7 +36,7 @@ export default function BusStopList() {
   ];
 
   const [displayedBusStops, setDisplayedBusStops] = useState(busStops);
-  const [editedBusLine, setEditedBusLine] = useState(undefined);
+  const [editedBusStop, setEditedBusStop] = useState(undefined);
   const [showDialog, setShowDialog] = useState(false);
 
   function newBusStop() {
@@ -40,8 +47,8 @@ export default function BusStopList() {
     setShowDialog(false);
   }
 
-  function editBusStop(line) {
-    setEditedBusLine(line.name)
+  function editBusStop(stop) {
+    setEditedBusStop(stop.name)
     setShowDialog(true);
   }
 
@@ -60,7 +67,10 @@ export default function BusStopList() {
   };
 
   return (
+    <div>
+      <Header />
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -78,12 +88,16 @@ export default function BusStopList() {
           </TableHead>
           <TableBody>
             {
-              displayedBusStops.map((line) => (
-                <TableRow key={line.name} className='tablerow'>
-                  <TableCell>{line.id}</TableCell>
-                  <TableCell>{line.name}</TableCell>
-                  <TableCell><Button variant="outlined" onClick={(event) => editBusStop(line.name)} >Bearbeiten</Button></TableCell>
+              displayedBusStops.map((stop) => (
+                <TableRow key={stop.name} className='tablerow'>
+                  <TableCell>{stop.id}</TableCell>
+                  <TableCell>{stop.name}</TableCell>
+                  { isStaff &&
+                      <TableCell><Button variant="outlined" onClick={(event) => editBusStop(stop.name)} >Bearbeiten</Button></TableCell>
+                  }
+                  { isStaff &&
                   <TableCell><button>Löschen</button></TableCell>
+                  }
                 </TableRow>
               ))
             }
@@ -102,7 +116,8 @@ export default function BusStopList() {
       <Button variant="outlined" onClick={newBusStop}>
         Neue Haltestelle anlegen
       </Button>
-      <CreateBusStop open={showDialog} name={editedBusLine} handleClose={() => closeDialog()} ></CreateBusStop>
+      <CreateBusStop open={showDialog} name={editedBusStop} handleClose={() => closeDialog()} ></CreateBusStop>
     </Paper>
+    </div>
   );
 }
