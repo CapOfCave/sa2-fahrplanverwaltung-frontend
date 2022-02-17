@@ -16,6 +16,29 @@ const headersData = [
     },
   ];
 
+  const headersDataStaff = [
+    {
+      label: "Fahrplanauskunft",
+      href: "/timetable",
+    },
+    {
+      label: "Buslinien",
+      href: "/buslines",
+    },
+    {
+      label: "Haltestellen",
+      href: "/busstops",
+    },
+    {
+      label: "Buslinien verwalten",
+      href: "/managebuslines",
+    },
+    {
+      label: "Fahrpläne verwalten",
+      href: "/managetimetables",
+    },
+  ];
+
 export default function Header({isStaff}){
 
     let navigate = useNavigate();
@@ -24,10 +47,10 @@ export default function Header({isStaff}){
     function handleClick(label){
       switch (label){
         case "Fahrplanauskunft":
-          //doSomething
+          navigate("/timetable")
         break;
         case "Buslinien":
-          //doSomething
+          navigate("/buslines")
         break;
         case "Haltestellen":
           navigate("/busstops");
@@ -49,19 +72,21 @@ export default function Header({isStaff}){
     
 
     function getMenuButtons () {
-      if(isStaff && headersData.length<4){
-        headersData.push({
-          label: "Buslinien verwalten",
-          href: "/buslines/manage",
-        },
-        {
-          label: "Fahrpläne verwalten",
-          href: "/timetables/manage",
-        },
-        {
-          label: "Bushaltestellen verwalten",
-          href: "/busstops/manage",
-        })
+      if(isStaff){
+        return headersDataStaff.map(({ label, href }) => {
+          return (
+            <Button onClick={(event) => handleClick(label)}
+              {...{
+                key: label,
+                color: "inherit",
+                to: href,
+                //component: RouterLink,
+              }}
+            >
+              {label}
+            </Button>
+          );
+        });
       }
         return headersData.map(({ label, href }) => {
           return (
