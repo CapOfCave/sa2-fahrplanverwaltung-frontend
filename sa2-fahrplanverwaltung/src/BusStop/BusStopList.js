@@ -18,15 +18,16 @@ const columns = [
   { id: 'id', label: 'ID', minWidth: 170 },
   { id: 'name', label: 'Name', minWidth: 170 },
 ];
-export default function BusStopList({isStaff}) {
-
-  isStaff=true;
+export default function BusStopList({isStaff,setIsStaff}) {
 
   if(isStaff && columns.length<3){
     columns.push(
       { id: 'modify', label: 'Bearbeiten', minWidth: 100 },
       { id: 'delete', label: 'Löschen', minWidth: 100 },)
 
+  }
+  if(!isStaff && columns.length>3){
+    columns.splice(2,2)
   }
   //var busStops = apiService().apiGetAllBusStops();
   var busStops = [
@@ -61,8 +62,6 @@ export default function BusStopList({isStaff}) {
     setDeleteBusStopDialog(true)
   }
 
-  console.log(busStops.toString());
-
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -77,7 +76,7 @@ export default function BusStopList({isStaff}) {
 
   return (
     <div>
-      <Header />
+      <Header isStaff={isStaff} setIsStaff={setIsStaff} />
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       
       <TableContainer sx={{ maxHeight: 440 }}>
