@@ -1,6 +1,5 @@
 import apiService from "../api/ApiService";
-import { useState } from 'react';
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -29,15 +28,16 @@ export default function BusStopList({isStaff,setIsStaff}) {
   if(!isStaff && columns.length>3){
     columns.splice(2,2)
   }
-  //var busStops = apiService().apiGetAllBusStops();
-  var busStops = [
+  const [busStops, setBusStops] = useState([]);
+  useEffect(() => apiService().apiGetAllBusStops().then((result) => setBusStops(result)), []);
+  console.log(busStops);
+  /*var busStops = [
     { "id": 1, "name": "Abbey Road" }, { "id": 2, "name": "Barn Street" },
     { "id": 3, "name": "Camp Street" }, { "id": 4, "name": "Dean Avenue" },
     { "id": 5, "name": "East Hills Avenue" }, { "id": 6, "name": "Farmer's lane" },
     { "id": 7, "name": "Gold Street" }
-  ];
+  ];*/
 
-  const [displayedBusStops, setDisplayedBusStops] = useState(busStops);
   const [editedBusStop, setEditedBusStop] = useState(undefined);
   const [showDialog, setShowDialog] = useState(false);
   const [deleteBusStopDialog, setDeleteBusStopDialog] = useState(false);
@@ -62,8 +62,8 @@ export default function BusStopList({isStaff,setIsStaff}) {
     setDeleteBusStopDialog(true)
   }
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -96,7 +96,7 @@ export default function BusStopList({isStaff,setIsStaff}) {
           </TableHead>
           <TableBody>
             {
-              displayedBusStops.map((stop) => (
+              busStops.map((stop) => (
                 <TableRow key={stop.name} className='tablerow'>
                   <TableCell>{stop.id}</TableCell>
                   <TableCell>{stop.name}</TableCell>
