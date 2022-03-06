@@ -28,9 +28,11 @@ export default function BusStopList({isStaff,setIsStaff}) {
   if(!isStaff && columns.length>3){
     columns.splice(2,2)
   }
+
   const [busStops, setBusStops] = useState([]);
   useEffect(() => apiService().apiGetAllBusStops().then((result) => setBusStops(result)), []);
-  console.log(busStops);
+  
+
   /*var busStops = [
     { "id": 1, "name": "Abbey Road" }, { "id": 2, "name": "Barn Street" },
     { "id": 3, "name": "Camp Street" }, { "id": 4, "name": "Dean Avenue" },
@@ -53,12 +55,12 @@ export default function BusStopList({isStaff,setIsStaff}) {
   }
 
   function editBusStop(stop) {
-    setEditedBusStop(stop.name)
+    setEditedBusStop(stop)
     setShowDialog(true);
   }
 
   function deleteBusStop(stop){
-    setEditedBusStop(stop.name)
+    setEditedBusStop(stop)
     setDeleteBusStopDialog(true)
   }
 
@@ -124,8 +126,8 @@ export default function BusStopList({isStaff,setIsStaff}) {
       <Button variant="outlined" onClick={newBusStop}>
         Neue Haltestelle anlegen
       </Button>
-      <CreateBusStop open={showDialog} name={editedBusStop} handleClose={() => closeDialog()} ></CreateBusStop>
-      <DeleteBusStop open={deleteBusStopDialog} name={editedBusStop} handleClose={() => closeDialog()}></DeleteBusStop>
+      <CreateBusStop open={showDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} ></CreateBusStop>
+      <DeleteBusStop open={deleteBusStopDialog} name={editedBusStop?.name} id={editedBusStop?.id} handleClose={() => closeDialog()}></DeleteBusStop>
     </Paper>
     </div>
   );
