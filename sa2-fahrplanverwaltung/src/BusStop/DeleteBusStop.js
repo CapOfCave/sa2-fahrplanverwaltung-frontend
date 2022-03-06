@@ -5,8 +5,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import apiService from '../api/ApiService';
 
-export default function DeleteBusStop({open, name, id, handleClose}) {
+export default function DeleteBusStop({open, name, id, handleClose, confirmDeletion}) {
 
   return (
     <div>
@@ -26,7 +27,7 @@ export default function DeleteBusStop({open, name, id, handleClose}) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} autoFocus>Abbrechen</Button>
-          <Button onClick={handleClose}>
+          <Button onClick={confirmDeletion}>
             Löschen
           </Button>
         </DialogActions>

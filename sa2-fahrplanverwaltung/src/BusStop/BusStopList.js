@@ -54,6 +54,11 @@ export default function BusStopList({isStaff,setIsStaff}) {
     setEditedBusStop(undefined);
   }
 
+  function confirmDeletion(){
+    apiService().apiDeleteBusStop(editedBusStop.id);
+    closeDialog();
+  }
+
   function editBusStop(stop) {
     setEditedBusStop(stop)
     setShowDialog(true);
@@ -127,7 +132,7 @@ export default function BusStopList({isStaff,setIsStaff}) {
         Neue Haltestelle anlegen
       </Button>
       <CreateBusStop open={showDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} ></CreateBusStop>
-      <DeleteBusStop open={deleteBusStopDialog} name={editedBusStop?.name} id={editedBusStop?.id} handleClose={() => closeDialog()}></DeleteBusStop>
+      <DeleteBusStop open={deleteBusStopDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}></DeleteBusStop>
     </Paper>
     </div>
   );

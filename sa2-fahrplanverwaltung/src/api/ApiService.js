@@ -33,6 +33,19 @@ class APIService {
         }
     }
 
+    async apiDeleteBusStop(id) {
+        try {
+            const response = await axios.delete(BASE_URL + "/busstops/" + id, {
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
     async apiGetAllSchedules() {
         try {
             const response = await axios.get(BASE_URL + "/schedules/", {
