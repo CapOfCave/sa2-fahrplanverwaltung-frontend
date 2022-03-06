@@ -32,4 +32,17 @@ class APIService {
             alert(error.message);
         }
     }
+
+    async apiGetAllSchedules() {
+        try {
+            const response = await axios.get(BASE_URL + "/schedules/", {
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
 }

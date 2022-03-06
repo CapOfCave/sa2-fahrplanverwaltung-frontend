@@ -59,7 +59,7 @@ export default function Header({isStaff, setIsStaff}) {
         //doSomething
         break;
       case "Fahrpläne verwalten":
-        navigate("/timetables/manage");
+        navigate("/schedules");
         break;
       case "Bushaltestellen verwalten":
         //doSomething

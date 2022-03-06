@@ -17,9 +17,9 @@ export default function AppRouter() {
         <BrowserRouter>
             <Routes>
                 <Route path="/busstops" element={<BusStopList isStaff={isStaff} setIsStaff={setIsStaff} />}/>
-                <Route path="/timetables/manage" element={<TimeTableList/>} />
-                <Route path="/timetable" element={<TimeTableSearch></TimeTableSearch>}/>
-                <Route path="/buslines" element={<BusLineOverview></BusLineOverview>} />
-                <Route path="*" element={<BusStopList/>} />
+                <Route path="/schedules" element={<TimeTableList isStaff={isStaff} setIsStaff={setIsStaff}/>} />
+                <Route path="/timetable" element={<TimeTableSearch isStaff={isStaff} setIsStaff={setIsStaff}></TimeTableSearch>}/>
+                <Route path="/buslines" element={<BusLineOverview isStaff={isStaff} setIsStaff={setIsStaff}></BusLineOverview>} />
+                <Route path="*" element={<BusStopList isStaff={isStaff} setIsStaff={setIsStaff}/>} />
             </Routes></BrowserRouter></>
 }

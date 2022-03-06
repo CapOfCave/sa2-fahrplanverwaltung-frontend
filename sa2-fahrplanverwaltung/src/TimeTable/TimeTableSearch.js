@@ -22,7 +22,7 @@ function closeDialog(){
         <form>
             <TextField label="Haltestelle" variant="outlined"></TextField>
             <TextField label="Uhrzeit" variant="outlined"></TextField>
-            <Button variant="outlined" onClick={(event) => setAllLines(true)}></Button>
+            <Button variant="outlined" onClick={(event) => setAllLines(true)}>Hi</Button>
         </form>
         <form>
             <TextField label="Haltestelle" variant="outlined"></TextField>
