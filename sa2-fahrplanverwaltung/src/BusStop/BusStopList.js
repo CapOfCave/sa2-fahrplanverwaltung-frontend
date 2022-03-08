@@ -54,11 +54,24 @@ export default function BusStopList({isStaff,setIsStaff}) {
     setEditedBusStop(undefined);
   }
 
+  function renameStop(name){
+    apiService().apiRenameBusStop(editedBusStop.id, name).then(response => {
+      apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
+    });
+    closeDialog();
+  }
+
+  function createStop(name){
+    apiService().apiCreateBusStop(name).then(response => {
+      apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
+    });
+    closeDialog();
+  }
+
   function confirmDeletion(){
     apiService().apiDeleteBusStop(editedBusStop.id).then(response => {
       apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
     });
-    
     closeDialog();
   }
 
@@ -134,7 +147,7 @@ export default function BusStopList({isStaff,setIsStaff}) {
       <Button variant="outlined" onClick={newBusStop}>
         Neue Haltestelle anlegen
       </Button>
-      <CreateBusStop open={showDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} ></CreateBusStop>
+      <CreateBusStop open={showDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} renameStop={renameStop} createNewStop={createStop}></CreateBusStop>
       <DeleteBusStop open={deleteBusStopDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}></DeleteBusStop>
     </Paper>
     </div>
