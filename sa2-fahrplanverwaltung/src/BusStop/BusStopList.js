@@ -12,17 +12,19 @@ import CreateBusStop from "./CreateBusStop";
 import { Button } from "@mui/material";
 import Header from "../layout/Header";
 import DeleteBusStop from "./DeleteBusStop";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 170 },
-  { id: 'name', label: 'Name', minWidth: 170 },
+  { id: 'id', label: 'ID', minWidth: 5},
+  { id: 'name', label: 'Name', minWidth: 250 },
 ];
 export default function BusStopList({isStaff,setIsStaff}) {
 
   if(isStaff && columns.length<3){
     columns.push(
-      { id: 'modify', label: 'Bearbeiten', minWidth: 100 },
-      { id: 'delete', label: 'Löschen', minWidth: 100 },)
+      { id: 'modify', label: 'Bearbeiten', minWidth: 10 },
+      { id: 'delete', label: 'Löschen', minWidth: 10 },
+      )
 
   }
   if(!isStaff && columns.length>3){
@@ -85,6 +87,11 @@ export default function BusStopList({isStaff,setIsStaff}) {
     setDeleteBusStopDialog(true)
   }
 
+  let navigate = useNavigate();
+  function showDetails(id){
+    navigate("/busstops/"+ id)
+  }
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -120,7 +127,7 @@ export default function BusStopList({isStaff,setIsStaff}) {
           <TableBody>
             {
               busStops.map((stop) => (
-                <TableRow key={stop.name} className='tablerow'>
+                <TableRow key={stop.name} className='tablerow' onClick={(event) => showDetails(stop.id)}>
                   <TableCell>{stop.id}</TableCell>
                   <TableCell>{stop.name}</TableCell>
                   { isStaff &&
