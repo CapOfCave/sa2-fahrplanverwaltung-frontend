@@ -55,7 +55,10 @@ export default function BusStopList({isStaff,setIsStaff}) {
   }
 
   function confirmDeletion(){
-    apiService().apiDeleteBusStop(editedBusStop.id);
+    apiService().apiDeleteBusStop(editedBusStop.id).then(response => {
+      apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
+    });
+    
     closeDialog();
   }
 
