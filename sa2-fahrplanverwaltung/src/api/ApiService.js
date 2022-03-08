@@ -86,4 +86,17 @@ class APIService {
             alert(error.message);
         }
     }
+
+    async apiDeleteSchedule(id) {
+        try {
+            const response = await axios.delete(BASE_URL + "/schedules/"+id, {
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
 }

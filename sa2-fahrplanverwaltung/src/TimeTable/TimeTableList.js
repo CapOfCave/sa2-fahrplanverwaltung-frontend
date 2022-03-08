@@ -2,10 +2,14 @@ import Header from "../layout/Header";
 import apiService from "../api/ApiService";
 import { useState, useEffect } from 'react';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import DeleteTimeTable from "./DeleteTimeTable"
 
 export default function TimeTableList({isStaff,setIsStaff}){
 
     const [schedules, setSchedules] = useState([]);
+    const [editDialog, setEditDialog] = useState(false);
+    const [deleteDialog, setDeleteDialog] = useState(false);
+    const [editedSchedule, setEditedSchedule] = useState(undefined);
     useEffect(() => apiService().apiGetAllSchedules().then((result) => setSchedules(result)), []);
 
     const columns = [
@@ -13,12 +17,31 @@ export default function TimeTableList({isStaff,setIsStaff}){
         { id: 'lastStop', label: 'Endhaltestelle', minWidth: 170 },
         { id: 'line', label: 'Buslinie', minWidth: 170 },
         { id: 'startTime', label: 'Startzeit', minWidth: 170 },
-        { id: 'delete', label: 'Löschen', minWidth: 100 }
+        { id: 'edit', label: 'Bearbeiten', minWidth: 100 },
+        { id: 'delete', label: 'Löschen', minWidth: 100 }        
     ]
 
     function deleteSchedule(schedule){
-        console.log(schedule.id);
+        setEditedSchedule(schedule);
+        setDeleteDialog(true);
     }
+
+    function confirmDeletion(){
+      apiService().apiDeleteSchedule(editedSchedule.id).then(response => {
+        apiService().apiGetAllSchedules().then(((result) => setSchedules(result)), []);
+      });
+      closeDialog();
+    }
+
+    function editSchedule(schedule){
+      console.log(schedule.id);
+  }
+
+  function closeDialog(){
+    setEditDialog(false);
+    setDeleteDialog(false);
+    setEditedSchedule(undefined);
+  }
 
     return(
         <div>
@@ -48,6 +71,7 @@ export default function TimeTableList({isStaff,setIsStaff}){
                   <TableCell>{schedule.finalStop.name}</TableCell>
                   <TableCell>{schedule.line.name}</TableCell>
                   <TableCell>{schedule.startTime}</TableCell>
+                  <TableCell><Button onClick={(event) => editSchedule(schedule)}>Bearbeiten</Button></TableCell>
                   <TableCell><Button onClick={(event) => deleteSchedule(schedule)}>Löschen</Button></TableCell>
                 </TableRow>
               ))
@@ -58,6 +82,7 @@ export default function TimeTableList({isStaff,setIsStaff}){
       <Button variant="outlined" >
         Neuen Fahrplan anlegen
       </Button>
+      <DeleteTimeTable open={deleteDialog} id={editedSchedule?.id} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}/>
     </Paper>
         </div>
     );
