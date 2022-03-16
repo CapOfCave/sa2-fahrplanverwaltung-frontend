@@ -37,7 +37,7 @@ export default function TimeTableSearchResult({stop, time}){
                 <TableRow key={scheduleEntries?.schedule.id} className='tablerow'>
                   <TableCell>{scheduleEntries?.schedule.id}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.line.name}</TableCell>
-                  <TableCell>{Date(scheduleEntries?.arrival)}</TableCell>
+                  <TableCell>{scheduleEntries?.arrival}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.finalStop.name}</TableCell>
                 </TableRow>
               ))

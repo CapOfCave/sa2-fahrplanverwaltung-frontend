@@ -43,9 +43,9 @@ export default function BusStopLineSchedule({ isStaff, setIsStaff }) {
                                 <TableRow key={scheduleEntries?.schedule.id} className='tablerow'>
                                     <TableCell>{scheduleEntries?.schedule.id}</TableCell>
                                     <TableCell>{scheduleEntries?.schedule.line.name}</TableCell>
-                                    <TableCell>{Date(scheduleEntries?.schedule.startTime)}</TableCell>
+                                    <TableCell>{scheduleEntries?.schedule.startTime}</TableCell>
                                     <TableCell>{scheduleEntries?.schedule.finalStop.name}</TableCell>
-                                    <TableCell>{Date(scheduleEntries?.arrival)}</TableCell>
+                                    <TableCell>{scheduleEntries?.arrival}</TableCell>
                                 </TableRow>
                             ))
                         }
