@@ -1,14 +1,20 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import apiService from "../api/ApiService";
 import Header from "../layout/Header";
 
 export default function BusStopDetail({ isStaff, setIsStaff }) {
 
   let { id } = useParams();
+
   const [busStopDetail, setBusStopDetail] = useState(null);
   useEffect(() => apiService().getBusStop(id).then((result) => setBusStopDetail(result)), []);
+
+  let navigate = useNavigate();
+  function showStopLineSchedule(stop, line){
+    navigate("/busstops/" + stop + "/schedule/" + line)
+  }
 
   return (
     <div>
@@ -26,8 +32,8 @@ export default function BusStopDetail({ isStaff, setIsStaff }) {
           <TableBody>
             {
               busStopDetail?.lines.map((line) => (
-                <TableRow key={line.id} className='tablerow'>
-                  <TableCell>{line.id}</TableCell>
+                <TableRow key={line.id} className='tablerow' onClick={(event) => showStopLineSchedule(id, line.id)}>
+                  <TableCell >{line.id}</TableCell>
                   <TableCell>{line.name}</TableCell>
                 </TableRow>
               ))

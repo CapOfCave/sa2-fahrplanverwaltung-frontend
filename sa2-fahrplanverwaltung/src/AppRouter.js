@@ -10,6 +10,7 @@ import BusLineDetail from "./BusLine/BusLineDetail";
 import BusStopList from "./BusStop/BusStopList";
 import TimeTableList from "./TimeTable/TimeTableList";
 import TimeTableSearch from "./TimeTable/TimeTableSearch";
+import BusStopLineSchedule from "./BusStop/BusStopLineSchedule";
 
 export default function AppRouter() {
 
@@ -24,7 +25,7 @@ export default function AppRouter() {
                 <Route path="/buslines" element={<BusLineOverview isStaff={isStaff} setIsStaff={setIsStaff}></BusLineOverview>} />
                 <Route path="/busstops/:id" element={<BusStopDetail isStaff={isStaff} setIsStaff={setIsStaff} />} />
                 <Route path="/buslines/:id" element={<BusLineDetail isStaff={isStaff} setIsStaff={setIsStaff} />} />
-                <Route path="/busstops/:id/timetable" element={<BusStopDetail isStaff={isStaff} setIsStaff={setIsStaff} />} />
+                <Route path="/busstops/:stop/schedule/:line" element={<BusStopLineSchedule isStaff={isStaff} setIsStaff={setIsStaff} />} />
                 <Route path="*" element={<BusStopList isStaff={isStaff} setIsStaff={setIsStaff} />} />
             </Routes></BrowserRouter></>
 }

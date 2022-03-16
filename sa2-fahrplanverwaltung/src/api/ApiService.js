@@ -167,6 +167,19 @@ class APIService {
         }
     }
 
+    async apiGetBusStopLineSchedules(stop, line) {
+        try {
+            const response = await axios.get(BASE_URL + "/busstops/" + stop +"/schedule/"+line, {
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
     async apiDeleteSchedule(id) {
         try {
             const response = await axios.delete(BASE_URL + "/schedules/"+id, {
