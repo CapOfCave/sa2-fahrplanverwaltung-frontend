@@ -127,9 +127,9 @@ export default function BusStopList({isStaff,setIsStaff}) {
           <TableBody>
             {
               busStops.map((stop) => (
-                <TableRow key={stop.name} className='tablerow' onClick={(event) => showDetails(stop.id)}>
+                <TableRow key={stop.name} className='tablerow' >
                   <TableCell>{stop.id}</TableCell>
-                  <TableCell>{stop.name}</TableCell>
+                  <TableCell onClick={(event) => showDetails(stop.id)}>{stop.name}</TableCell>
                   { isStaff &&
                       <TableCell><Button variant="outlined" onClick={(event) => editBusStop(stop)} >Bearbeiten</Button></TableCell>
                   }

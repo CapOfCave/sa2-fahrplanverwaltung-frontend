@@ -87,6 +87,19 @@ class APIService {
         }
     }
 
+    async apiSearchTimetables(id, time) {
+        try {
+            const response = await axios.get(BASE_URL + "/busstops/" + id +"/timetable?startTime="+time+"&durationSeconds=3000", {
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
     async apiDeleteSchedule(id) {
         try {
             const response = await axios.delete(BASE_URL + "/schedules/"+id, {
