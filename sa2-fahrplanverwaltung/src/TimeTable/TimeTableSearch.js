@@ -47,7 +47,7 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
                         sx={{ width: 300, marginBottom: 3 }}
                     />
                 </LocalizationProvider>
-                <Button variant="outlined" onClick={(event) => setShowResult(true)}>Suchen</Button>
+                <Button variant="outlined" onClick={(event) => setShowResult(true)} disabled={!stop}>Suchen</Button>
                 { showResult &&
                 <TimeTableSearchResult stop={stop} time={new Date(dateValue).toISOString()}/>
                 }
