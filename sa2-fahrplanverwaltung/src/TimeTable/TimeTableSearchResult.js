@@ -1,8 +1,6 @@
-import Header from "../layout/Header";
 import apiService from "../api/ApiService";
 import { useState, useEffect } from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import TimeTableAllLines from "./TimeTableAllLines";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 export default function TimeTableSearchResult({stop, time}){
 
@@ -18,7 +16,7 @@ export default function TimeTableSearchResult({stop, time}){
 
     return(
         <div>      
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 440, marginTop: 3 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -39,7 +37,7 @@ export default function TimeTableSearchResult({stop, time}){
                 <TableRow key={scheduleEntries?.schedule.id} className='tablerow'>
                   <TableCell>{scheduleEntries?.schedule.id}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.line.name}</TableCell>
-                  <TableCell>{scheduleEntries?.arrival}</TableCell>
+                  <TableCell>{Date(scheduleEntries?.arrival)}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.finalStop.name}</TableCell>
                 </TableRow>
               ))
