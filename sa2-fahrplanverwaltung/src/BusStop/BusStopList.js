@@ -15,25 +15,25 @@ import DeleteBusStop from "./DeleteBusStop";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
-  { id: 'id', label: 'ID', minWidth: 5},
+  { id: 'id', label: 'ID', minWidth: 5 },
   { id: 'name', label: 'Name', minWidth: 250 },
 ];
-export default function BusStopList({isStaff,setIsStaff}) {
+export default function BusStopList({ isStaff, setIsStaff }) {
 
-  if(isStaff && columns.length<3){
+  if (isStaff && columns.length < 3) {
     columns.push(
       { id: 'modify', label: 'Bearbeiten', minWidth: 10 },
       { id: 'delete', label: 'Löschen', minWidth: 10 },
-      )
+    )
 
   }
-  if(!isStaff && columns.length>3){
-    columns.splice(2,2)
+  if (!isStaff && columns.length > 3) {
+    columns.splice(2, 2)
   }
 
   const [busStops, setBusStops] = useState([]);
   useEffect(() => apiService().apiGetAllBusStops().then((result) => setBusStops(result)), []);
-  
+
 
   /*var busStops = [
     { "id": 1, "name": "Abbey Road" }, { "id": 2, "name": "Barn Street" },
@@ -56,21 +56,21 @@ export default function BusStopList({isStaff,setIsStaff}) {
     setEditedBusStop(undefined);
   }
 
-  function renameStop(name){
+  function renameStop(name) {
     apiService().apiRenameBusStop(editedBusStop.id, name).then(response => {
       apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
     });
     closeDialog();
   }
 
-  function createStop(name){
+  function createStop(name) {
     apiService().apiCreateBusStop(name).then(response => {
       apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
     });
     closeDialog();
   }
 
-  function confirmDeletion(){
+  function confirmDeletion() {
     apiService().apiDeleteBusStop(editedBusStop.id).then(response => {
       apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
     });
@@ -82,14 +82,14 @@ export default function BusStopList({isStaff,setIsStaff}) {
     setShowDialog(true);
   }
 
-  function deleteBusStop(stop){
+  function deleteBusStop(stop) {
     setEditedBusStop(stop)
     setDeleteBusStopDialog(true)
   }
 
   let navigate = useNavigate();
-  function showDetails(id){
-    navigate("/busstops/"+ id)
+  function showDetails(id) {
+    navigate("/busstops/" + id)
   }
 
   const [page, setPage] = useState(0);
@@ -107,56 +107,58 @@ export default function BusStopList({isStaff,setIsStaff}) {
   return (
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff} />
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              busStops.map((stop) => (
-                <TableRow key={stop.name} className='tablerow' >
-                  <TableCell>{stop.id}</TableCell>
-                  <TableCell onClick={(event) => showDetails(stop.id)}>{stop.name}</TableCell>
-                  { isStaff &&
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+
+        <TableContainer sx={{ maxHeight: 440 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {
+                busStops.map((stop) => (
+                  <TableRow key={stop.name} className='tablerow' >
+                    <TableCell>{stop.id}</TableCell>
+                    <TableCell onClick={(event) => showDetails(stop.id)}>{stop.name}</TableCell>
+                    {isStaff &&
                       <TableCell><Button variant="outlined" onClick={(event) => editBusStop(stop)} >Bearbeiten</Button></TableCell>
-                  }
-                  { isStaff &&
-                  <TableCell><Button onClick={(event) => deleteBusStop(stop)}>Löschen</Button></TableCell>
-                  }
-                </TableRow>
-              ))
-            }
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={busStops.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <Button variant="outlined" onClick={newBusStop}>
-        Neue Haltestelle anlegen
-      </Button>
-      <CreateBusStop open={showDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} renameStop={renameStop} createNewStop={createStop}></CreateBusStop>
-      <DeleteBusStop open={deleteBusStopDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}></DeleteBusStop>
-    </Paper>
+                    }
+                    {isStaff &&
+                      <TableCell><Button onClick={(event) => deleteBusStop(stop)}>Löschen</Button></TableCell>
+                    }
+                  </TableRow>
+                ))
+              }
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={busStops.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+        {isStaff &&
+          <Button variant="outlined" onClick={newBusStop}>
+            Neue Haltestelle anlegen
+          </Button>
+        }
+        <CreateBusStop open={showDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} renameStop={renameStop} createNewStop={createStop}></CreateBusStop>
+        <DeleteBusStop open={deleteBusStopDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}></DeleteBusStop>
+      </Paper>
     </div>
   );
 }

@@ -42,7 +42,7 @@ class APIService {
             });
             return response.data;
         } catch (error) {
-            alert(error.message);
+            alert(error.response.data);
         }
     }
 
@@ -109,7 +109,7 @@ class APIService {
             });
             return response.data;
         } catch (error) {
-            alert(error.message);
+            alert(error.response.data);
         }
     }
 
