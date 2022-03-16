@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import apiService from "../api/ApiService";
 import Header from "../layout/Header";
 
@@ -20,8 +20,7 @@ export default function BusLineDetail({ isStaff, setIsStaff }) {
           <TableHead>
             <TableRow>
               <TableCell key={id}>ID</TableCell>
-              <TableCell>Buslinie</TableCell>
-              <TableCell>Haltestellen</TableCell>
+              <TableCell>Haltestelle</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -29,8 +28,7 @@ export default function BusLineDetail({ isStaff, setIsStaff }) {
               busLineDetail?.lineStops.map((stop) => (
                 <TableRow key={stop.id} className='tablerow'>
                   <TableCell>{stop.id}</TableCell>
-                  <TableCell>{stop.name}</TableCell>
-                  <TableCell>{stop.id}</TableCell>
+                  <TableCell>Name von {stop.id}</TableCell>
                 </TableRow>
               ))
             }
