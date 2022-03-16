@@ -7,6 +7,73 @@ export default function apiService() {
 }
 
 class APIService {
+    async apiGetAllBusLines() {
+        try {
+            const response = await axios.get(BASE_URL + "/lines/", {
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    async getBusLine(id) {
+        try {
+            const response = await axios.get(BASE_URL + "/lines/" + id, {
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    async apiDeleteBusLine(id) {
+        try {
+            const response = await axios.delete(BASE_URL + "/lines/" + id, {
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    async apiRenameBusLine(id, name) {
+        try {
+            const response = await axios.patch(BASE_URL + "/lines/" + id, {
+                    "name" : name,
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    async apiCreateBusLine(name) {
+        try {
+            const response = await axios.post(BASE_URL + "/lines", {
+                    "name" : name,
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
     async apiGetAllBusStops() {
         try {
             const response = await axios.get(BASE_URL + "/busstops/", {
