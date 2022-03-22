@@ -14,20 +14,24 @@ import { useEffect, useState } from 'react';
 import apiService from '../api/ApiService';
 import moment from "moment";
 
-export default function EditTimeTable({ open, handleClose, onSuccess, schedule }) {
+export default function CreateTimeTable({ open, handleClose, onSuccess }) {
 
+  const [lines, setLines] = useState([]);
+  useEffect(() => apiService().apiGetAllBusLines().then((result) => setLines(result)), []);
   const [finalStopOptions, setFinalStopOptions] = useState([]);
 
   // form elements
+  const [selectedLine, setSelectedLine] = useState(null);
   const [time, setTime] = useState(null);
   const [selectedFinalStop, setSelectedFinalStop] = useState(null);
 
+  // when a line is selected, set available final stops
   useEffect(() => {
-    if (!schedule?.line?.id) {
+    if (!selectedLine) {
       setFinalStopOptions([])
       return;
     }
-    apiService().getBusLine(schedule.line.id)
+    apiService().getBusLine(selectedLine.id)
       .then(lineDetail => lineDetail.lineStops)
       .then(lineStops => {
         const newFinalStops = [
@@ -43,32 +47,30 @@ export default function EditTimeTable({ open, handleClose, onSuccess, schedule }
         setFinalStopOptions(newFinalStops);
         setSelectedFinalStop(newFinalStops[0]);
       })
-  }, [schedule?.line?.id]);
+  }, [selectedLine]);
 
-  // update form with default values when selected
+  // reset form when closed
   useEffect(() => {
-    if (!schedule) return;
-    const time = moment(schedule.startTime, "HH:mm:ss");
-    setTime(time);
-  }, [schedule])
+    if (open) return
+    setSelectedLine(null);
+    setTime(null);
+    setSelectedFinalStop(null);
+  }, [open])
 
-  useEffect(() => {
-    if (!schedule) return;
-    if (finalStopOptions.length < 2) return;
-    setSelectedFinalStop(schedule.reverseDirection ? finalStopOptions[1] : finalStopOptions[0]);
-  }, [schedule, finalStopOptions])
+  const handleLineChange = (e, newValue) => {
+    setSelectedLine(newValue);
+  };
 
   const handleTimeChange = (newValue) => {
-    setTime(moment(newValue));
+    setTime(newValue);
   };
 
   const handleFinalStopChange = (e, newValue) => {
     setSelectedFinalStop(newValue);
   }
 
-
-  const saveSchedule = () => {   
-    apiService().apiUpdateSchedule(schedule.id, time.format("HH:mm"), selectedFinalStop.reverseDirection)
+  const saveSchedule = () => {
+    apiService().apiCreateSchedule(selectedLine.id, moment(new Date(time).toISOString()).format("HH:mm"), selectedFinalStop.reverseDirection)
       .then(response => {
         onSuccess();
         handleClose();
@@ -76,20 +78,21 @@ export default function EditTimeTable({ open, handleClose, onSuccess, schedule }
   }
   return (
     <Dialog
-      open={Boolean(open && schedule)}
+      open={open}
       onClose={handleClose}
-      aria-labelledby="edittimetable-dialog-title"
+      aria-labelledby="createtimetable-dialog-title"
     >
-      <DialogTitle id="edittimetable-dialog-title">
-        Fahrplan {schedule?.id} bearbeiten
+      <DialogTitle id="createtimetable-dialog-title">
+        Neuen Fahrplan anlegen
       </DialogTitle>
       <DialogContent sx={{ minWidth: '20rem' }}>
-        <TextField
-          label="Buslinie"
-          value={schedule?.line?.name}
-          disabled
+        <Autocomplete
+          options={lines}
+          value={selectedLine}
+          getOptionLabel={option => option.name}
+          onChange={handleLineChange}
           sx={{ mb: 2, mt: 1 }}
-          fullWidth
+          renderInput={(params) => <TextField {...params} fullWidth label="Buslinie" />}
         />
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={deLocale}>
           <TimePicker
@@ -111,7 +114,7 @@ export default function EditTimeTable({ open, handleClose, onSuccess, schedule }
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} autoFocus>Abbrechen</Button>
-        <Button onClick={saveSchedule} disabled={time === null || selectedFinalStop === null}>
+        <Button onClick={saveSchedule} disabled={selectedLine === null || time === null || selectedFinalStop === null}>
           Speichern
         </Button>
       </DialogActions>

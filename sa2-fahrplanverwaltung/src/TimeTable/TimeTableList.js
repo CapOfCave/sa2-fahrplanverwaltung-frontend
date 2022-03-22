@@ -6,16 +6,15 @@ import DeleteTimeTable from "./DeleteTimeTable"
 import EditTimeTable from "./EditTimeTable";
 import moment from "moment";
 import { Navigate } from "react-router-dom";
+import CreateTimeTable from "./CreateTimeTable";
 
 export default function TimeTableList({isStaff,setIsStaff}){
 
     const [schedules, setSchedules] = useState([]);
+    const [createDialog, setCreateDialog] = useState(false);
     const [editDialog, setEditDialog] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [editedSchedule, setEditedSchedule] = useState(undefined);
-    const [line, setLine] = useState("Buslinie");
-    const [reverseDirection, setReverseDirection] = useState(false);
-    const [time, setTime] = useState(Date());
 
     useEffect(() => apiService().apiGetAllSchedules().then((result) => setSchedules(result)), []);
 
@@ -40,19 +39,8 @@ export default function TimeTableList({isStaff,setIsStaff}){
       closeDialog();
     }
 
-    function saveSchedule(){
-      if(editedSchedule){
-        apiService().apiUpdateSchedule(editedSchedule.id, moment(new Date(time).toISOString()).format("HH:mm"), reverseDirection).then(response => {
-          apiService().apiGetAllSchedules().then(((result) => setSchedules(result)), []);
-        });
-      }
-      else{
-        apiService().apiCreateSchedule(line.id, moment(new Date(time).toISOString()).format("HH:mm"), reverseDirection).then(response => {
-          apiService().apiGetAllSchedules().then(((result) => setSchedules(result)), []);
-        });
-      }
-      
-      closeDialog();
+    function refreshSchedules() {
+      apiService().apiGetAllSchedules().then(result => setSchedules(result))
     }
 
     function editSchedule(schedule){
@@ -61,7 +49,7 @@ export default function TimeTableList({isStaff,setIsStaff}){
   }
 
   function createSchedule(){
-    setEditDialog(true);
+    setCreateDialog(true);
 }
 
   function closeDialog(){
@@ -119,13 +107,13 @@ export default function TimeTableList({isStaff,setIsStaff}){
       <EditTimeTable 
           open={editDialog} 
           schedule={editedSchedule} 
-          handleClose={() => closeDialog()} 
-          saveSchedule={() => saveSchedule()}
-          line={line} 
-          setLine={setLine} 
-          time={time} 
-          setTime={setTime}
-          setReverseDirection={setReverseDirection}
+          handleClose={() => setEditDialog(false)} 
+          onSuccess={refreshSchedules}
+        />
+        <CreateTimeTable
+          open={createDialog}
+          handleClose={() => setCreateDialog(false)}
+          onSuccess={refreshSchedules}
         />
 
     </Paper>
