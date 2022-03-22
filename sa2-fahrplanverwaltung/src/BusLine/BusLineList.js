@@ -22,13 +22,14 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
 
   if (isStaff && columns.length < 3) {
     columns.push(
-      { id: 'modify', label: 'Umbennenen', minWidth: 10 },
+      { id: 'modify', label: 'Haltestellen Bearbeiten', minWidth: 10 },
+      { id: 'rename', label: 'Umbennenen', minWidth: 10 },
       { id: 'delete', label: 'Löschen', minWidth: 10 },
     )
 
   }
   if (!isStaff && columns.length > 3) {
-    columns.splice(2, 2)
+    columns.splice(2, 3)
   }
 
   const [busLines, setBusLines] = useState([]);
@@ -84,6 +85,10 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
     navigate("/buslines/" + id)
   }
 
+  function modifyStops(id) {
+    navigate("/buslines/" + id + "/modify")
+  }
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -121,6 +126,9 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
                   <TableRow key={line.name} className='tablerow' >
                     <TableCell>{line.id}</TableCell>
                     <TableCell onClick={(event) => showDetails(line.id)}>{line.name}</TableCell>
+                    {isStaff &&
+                      <TableCell><Button variant="outlined" onClick={(event) => modifyStops(line.id)} >Bearbeiten</Button></TableCell>
+                    }
                     {isStaff &&
                       <TableCell><Button variant="outlined" onClick={(event) => editBusLine(line)} >Umbenennen</Button></TableCell>
                     }

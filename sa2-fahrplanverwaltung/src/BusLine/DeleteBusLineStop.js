@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import apiService from '../api/ApiService';
 
-export default function deleteBusLine({ open, name, id, handleClose, confirmDeletion }) {
+export default function deleteBusLine({ open, nameStop, nameLine, handleClose, confirmDeletion }) {
 
   return (
     <div>
@@ -18,11 +18,11 @@ export default function deleteBusLine({ open, name, id, handleClose, confirmDele
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Wollen Sie die Buslinie ${name} wirklich löschen?`}
+          {`Wollen Sie die Bushaltestelle ${nameStop} in der Buslinie ${nameLine} wirklich löschen?`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Gelöschte Buslinien können nicht wiederhergestellt werden.
+            Gelöschte Haltestellen können nicht an dieser Position wiederhergestellt werden.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
