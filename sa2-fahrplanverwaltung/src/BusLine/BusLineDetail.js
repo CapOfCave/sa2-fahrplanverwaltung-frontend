@@ -20,14 +20,16 @@ export default function BusLineDetail({ isStaff, setIsStaff }) {
             <TableRow>
               <TableCell key={id}>ID</TableCell>
               <TableCell>Haltestelle</TableCell>
+              <TableCell>Fahrtzeit zur nächsten Haltestelle (in Minuten)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {
               busLineDetail?.lineStops.map((stop) => (
                 <TableRow key={stop.id} className='tablerow'>
-                  <TableCell>{stop.busStopId}</TableCell>
+                  <TableCell>{stop.id}</TableCell>
                   <TableCell>{stop.busStopName}</TableCell>
+                  <TableCell>{stop.secondsToNextStop / 60}</TableCell>
                 </TableRow>
               ))
             }
