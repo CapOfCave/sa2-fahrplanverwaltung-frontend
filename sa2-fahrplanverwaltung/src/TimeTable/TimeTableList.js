@@ -116,8 +116,18 @@ export default function TimeTableList({isStaff,setIsStaff}){
         Neuen Fahrplan anlegen
       </Button>
       <DeleteTimeTable open={deleteDialog} id={editedSchedule?.id} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}/>
-      <EditTimeTable open={editDialog} schedule={editedSchedule} handleClose={() => closeDialog()} saveSchedule={() => saveSchedule()}
-      line={line} setLine={setLine} time={time} setTime={setTime}/>
+      <EditTimeTable 
+          open={editDialog} 
+          schedule={editedSchedule} 
+          handleClose={() => closeDialog()} 
+          saveSchedule={() => saveSchedule()}
+          line={line} 
+          setLine={setLine} 
+          time={time} 
+          setTime={setTime}
+          setReverseDirection={setReverseDirection}
+        />
+
     </Paper>
         </div>
     );
