@@ -5,6 +5,7 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import DeleteTimeTable from "./DeleteTimeTable"
 import EditTimeTable from "./EditTimeTable";
 import moment from "moment";
+import { Navigate } from "react-router-dom";
 
 export default function TimeTableList({isStaff,setIsStaff}){
 
@@ -67,6 +68,12 @@ export default function TimeTableList({isStaff,setIsStaff}){
     setEditDialog(false);
     setDeleteDialog(false);
     setEditedSchedule(undefined);
+  }
+
+  if(!isStaff){
+    return (
+      <Navigate to="/timetable" />
+    );
   }
 
     return(
