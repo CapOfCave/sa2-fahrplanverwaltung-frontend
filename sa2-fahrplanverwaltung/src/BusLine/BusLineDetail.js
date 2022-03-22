@@ -27,8 +27,8 @@ export default function BusLineDetail({ isStaff, setIsStaff }) {
             {
               busLineDetail?.lineStops.map((stop) => (
                 <TableRow key={stop.id} className='tablerow'>
-                  <TableCell>{stop.id}</TableCell>
-                  <TableCell>Name von {stop.id}</TableCell>
+                  <TableCell>{stop.busStopId}</TableCell>
+                  <TableCell>{stop.busStopName}</TableCell>
                 </TableRow>
               ))
             }
