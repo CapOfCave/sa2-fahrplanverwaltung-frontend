@@ -28,6 +28,6 @@ export default function AppRouter() {
                 <Route path="/buslines/:id" element={<BusLineDetail isStaff={isStaff} setIsStaff={setIsStaff} />} />
                 <Route path="/buslines/:id/modify" element={<BusLineModifyStops isStaff={isStaff} setIsStaff={setIsStaff} />} />
                 <Route path="/busstops/:stop/schedule/:line" element={<BusStopLineSchedule isStaff={isStaff} setIsStaff={setIsStaff} />} />
-                <Route path="*" element={<BusStopList isStaff={isStaff} setIsStaff={setIsStaff} />} />
+                <Route path="*" element={<TimeTableSearch isStaff={isStaff} setIsStaff={setIsStaff} />} />
             </Routes></BrowserRouter></>
 }

@@ -54,11 +54,8 @@ export default function Header({ isStaff, setIsStaff }) {
       case "Fahrpläne verwalten":
         navigate("/schedules");
         break;
-      case "Bushaltestellen verwalten":
-        //doSomething
-        break;
       default:
-        //default
+        navigate("/timetable");
         break;
     }
   }

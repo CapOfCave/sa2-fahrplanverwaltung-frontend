@@ -5,6 +5,7 @@ import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, 
 import DeleteTimeTable from "./DeleteTimeTable"
 import EditTimeTable from "./EditTimeTable";
 import moment from "moment";
+import { Navigate } from "react-router-dom";
 
 export default function TimeTableList({isStaff,setIsStaff}){
 
@@ -69,6 +70,12 @@ export default function TimeTableList({isStaff,setIsStaff}){
     setEditedSchedule(undefined);
   }
 
+  if(!isStaff){
+    return (
+      <Navigate to="/timetable" />
+    );
+  }
+
     return(
         <div>
             <Header isStaff={isStaff} setIsStaff={setIsStaff}/>
@@ -109,8 +116,18 @@ export default function TimeTableList({isStaff,setIsStaff}){
         Neuen Fahrplan anlegen
       </Button>
       <DeleteTimeTable open={deleteDialog} id={editedSchedule?.id} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}/>
-      <EditTimeTable open={editDialog} schedule={editedSchedule} handleClose={() => closeDialog()} saveSchedule={() => saveSchedule()}
-      line={line} setLine={setLine} time={time} setTime={setTime}/>
+      <EditTimeTable 
+          open={editDialog} 
+          schedule={editedSchedule} 
+          handleClose={() => closeDialog()} 
+          saveSchedule={() => saveSchedule()}
+          line={line} 
+          setLine={setLine} 
+          time={time} 
+          setTime={setTime}
+          setReverseDirection={setReverseDirection}
+        />
+
     </Paper>
         </div>
     );
