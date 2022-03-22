@@ -22,7 +22,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
 
   if (isStaff && columns.length < 3) {
     columns.push(
-      { id: 'modify', label: 'Bearbeiten', minWidth: 10 },
+      { id: 'modify', label: 'Umbennenen', minWidth: 10 },
       { id: 'delete', label: 'Löschen', minWidth: 10 },
     )
 
@@ -122,7 +122,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
                     <TableCell>{line.id}</TableCell>
                     <TableCell onClick={(event) => showDetails(line.id)}>{line.name}</TableCell>
                     {isStaff &&
-                      <TableCell><Button variant="outlined" onClick={(event) => editBusLine(line)} >Bearbeiten</Button></TableCell>
+                      <TableCell><Button variant="outlined" onClick={(event) => editBusLine(line)} >Umbenennen</Button></TableCell>
                     }
                     {isStaff &&
                       <TableCell><Button onClick={(event) => deleteBusLine(line)}>Löschen</Button></TableCell>
