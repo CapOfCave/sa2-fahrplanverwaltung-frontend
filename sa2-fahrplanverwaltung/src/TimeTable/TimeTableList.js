@@ -3,6 +3,7 @@ import apiService from "../api/ApiService";
 import { useState, useEffect } from 'react';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import DeleteTimeTable from "./DeleteTimeTable"
+import EditTimeTable from "./EditTimeTable";
 
 export default function TimeTableList({isStaff,setIsStaff}){
 
@@ -10,6 +11,10 @@ export default function TimeTableList({isStaff,setIsStaff}){
     const [editDialog, setEditDialog] = useState(false);
     const [deleteDialog, setDeleteDialog] = useState(false);
     const [editedSchedule, setEditedSchedule] = useState(undefined);
+    const [line, setLine] = useState("Buslinie");
+    const [reverseDirection, setReverseDirection] = useState(false);
+    const [time, setTime] = useState(Date());
+
     useEffect(() => apiService().apiGetAllSchedules().then((result) => setSchedules(result)), []);
 
     const columns = [
@@ -33,9 +38,29 @@ export default function TimeTableList({isStaff,setIsStaff}){
       closeDialog();
     }
 
+    function saveSchedule(){
+      if(editedSchedule){
+        apiService().apiUpdateSchedule(editedSchedule.id, time, reverseDirection).then(response => {
+          apiService().apiGetAllSchedules().then(((result) => setSchedules(result)), []);
+        });
+      }
+      else{
+        apiService().apiCreateSchedule(line, time, reverseDirection).then(response => {
+          apiService().apiGetAllSchedules().then(((result) => setSchedules(result)), []);
+        });
+      }
+      
+      closeDialog();
+    }
+
     function editSchedule(schedule){
-      console.log(schedule.id);
+      setEditedSchedule(schedule);
+      setEditDialog(true);
   }
+
+  function createSchedule(){
+    setEditDialog(true);
+}
 
   function closeDialog(){
     setEditDialog(false);
@@ -79,10 +104,12 @@ export default function TimeTableList({isStaff,setIsStaff}){
           </TableBody>
         </Table>
       </TableContainer>
-      <Button variant="outlined" >
+      <Button variant="outlined" onClick={(event) => createSchedule()}>
         Neuen Fahrplan anlegen
       </Button>
       <DeleteTimeTable open={deleteDialog} id={editedSchedule?.id} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}/>
+      <EditTimeTable open={editDialog} schedule={editedSchedule} handleClose={() => closeDialog()} saveSchedule={() => saveSchedule()}
+      line={line} setLine={setLine} time={time} setTime={setTime}/>
     </Paper>
         </div>
     );

@@ -5,7 +5,8 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
 export default function TimeTableSearchResult({stop, time}){
 
     const [scheduleEntries, setScheduleEntries] = useState([]);
-    useEffect(() => apiService().apiSearchTimetables(stop.id, time).then((result) => setScheduleEntries(result.scheduleEntries)), [stop.id, time]);
+
+    useEffect(() => {if(stop){apiService().apiSearchTimetables(stop?.id, time).then((result) => setScheduleEntries(result.scheduleEntries))}}, [stop, time]);
 
     const columns = [
         { id: 'id', label: 'ID', minWidth: 20 },
@@ -33,7 +34,7 @@ export default function TimeTableSearchResult({stop, time}){
           </TableHead>
           <TableBody>
             {
-              scheduleEntries.map((scheduleEntries) => (
+              scheduleEntries?.map((scheduleEntries) => (
                 <TableRow key={scheduleEntries?.schedule.id} className='tablerow'>
                   <TableCell>{scheduleEntries?.schedule.id}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.line.name}</TableCell>
