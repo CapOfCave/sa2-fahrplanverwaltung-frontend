@@ -31,16 +31,12 @@ const headersDataStaff = [
     href: "/busstops",
   },
   {
-    label: "Buslinien verwalten",
-    href: "/managebuslines",
-  },
-  {
     label: "Fahrpläne verwalten",
     href: "/managetimetables",
   },
 ];
 
-export default function Header({isStaff, setIsStaff}) {
+export default function Header({ isStaff, setIsStaff }) {
 
   let navigate = useNavigate();
 
@@ -54,9 +50,6 @@ export default function Header({isStaff, setIsStaff}) {
         break;
       case "Haltestellen":
         navigate("/busstops");
-        break;
-      case "Buslinien verwalten":
-        //doSomething
         break;
       case "Fahrpläne verwalten":
         navigate("/schedules");
@@ -108,15 +101,15 @@ export default function Header({isStaff, setIsStaff}) {
   return (
     <header>
       <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          {getMenuButtons()}
-          <Typography sx={{ flexGrow: 1 }}/>
-          <FormControlLabel control={<Switch checked={isStaff}
-            onChange={handleChange}
-            color="secondary" />} label="Admin" />
-        </Toolbar>
-      </AppBar>
+        <AppBar position="static">
+          <Toolbar>
+            {getMenuButtons()}
+            <Typography sx={{ flexGrow: 1 }} />
+            <FormControlLabel control={<Switch checked={isStaff}
+              onChange={handleChange}
+              color="secondary" />} label="Admin" />
+          </Toolbar>
+        </AppBar>
       </Box>
     </header>
   );
