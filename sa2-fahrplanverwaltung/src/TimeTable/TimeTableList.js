@@ -81,7 +81,7 @@ export default function TimeTableList({isStaff,setIsStaff}){
             <Header isStaff={isStaff} setIsStaff={setIsStaff}/>
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
