@@ -29,5 +29,5 @@ jobs:
         cache-dependency-path: sa2-fahrplanverwaltung/package-lock.json
     - run: npm ci
       working-directory: sa2-fahrplanverwaltung
-    - run: npm run build --if-present
+    - run: CI= npm run build --if-present
       working-directory: sa2-fahrplanverwaltung
