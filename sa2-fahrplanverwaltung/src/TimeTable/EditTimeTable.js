@@ -24,7 +24,7 @@ export default function EditTimeTable({ open, schedule, handleClose, saveSchedul
     setLine(newValue);
   };
 
-  const handleTimeChange = (e, newValue) => {
+  const handleTimeChange = (newValue) => {
     setTime(newValue);
   };
 

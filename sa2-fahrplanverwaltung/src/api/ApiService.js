@@ -192,4 +192,36 @@ class APIService {
             alert(error.message);
         }
     }
+
+    async apiUpdateSchedule(id, time, reverseDirection) {
+        console.log(time);
+        try {
+            const response = await axios.patch(BASE_URL + "/schedules/" + id, {
+                    "startTime" : time,
+                    "reverseDirection" : reverseDirection,
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
+
+    async apiCreateSchedule(line, time, reverseDirection) {
+        try {
+            const response = await axios.post(BASE_URL + "/schedules", {
+                    "lineId" : line,
+                    "startTime" : time,
+                    "reverseDirection" : reverseDirection,
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.message);
+        }
+    }
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import DeleteTimeTable from "./DeleteTimeTable"
 import EditTimeTable from "./EditTimeTable";
+import moment from "moment";
 
 export default function TimeTableList({isStaff,setIsStaff}){
 
@@ -40,12 +41,12 @@ export default function TimeTableList({isStaff,setIsStaff}){
 
     function saveSchedule(){
       if(editedSchedule){
-        apiService().apiUpdateSchedule(editedSchedule.id, time, reverseDirection).then(response => {
+        apiService().apiUpdateSchedule(editedSchedule.id, moment(new Date(time).toISOString()).format("HH:mm"), reverseDirection).then(response => {
           apiService().apiGetAllSchedules().then(((result) => setSchedules(result)), []);
         });
       }
       else{
-        apiService().apiCreateSchedule(line, time, reverseDirection).then(response => {
+        apiService().apiCreateSchedule(line.id, moment(new Date(time).toISOString()).format("HH:mm"), reverseDirection).then(response => {
           apiService().apiGetAllSchedules().then(((result) => setSchedules(result)), []);
         });
       }
