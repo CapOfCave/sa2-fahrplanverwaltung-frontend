@@ -35,7 +35,7 @@ export default function TimeTableSearchResult({stop, time}){
           <TableBody>
             {
               scheduleEntries?.map((scheduleEntries) => (
-                <TableRow key={scheduleEntries?.schedule.id} className='tablerow'>
+                <TableRow key={[scheduleEntries?.schedule.id, scheduleEntries?.arrival]} className='tablerow'>
                   <TableCell>{scheduleEntries?.schedule.id}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.line.name}</TableCell>
                   <TableCell>{scheduleEntries?.arrival}</TableCell>
