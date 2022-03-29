@@ -107,7 +107,8 @@ export default function BusStopList({ isStaff, setIsStaff }) {
   return (
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff} />
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <h1>Bushaltestellen</h1>
+      <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: 2 }}>
         <TableContainer>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>

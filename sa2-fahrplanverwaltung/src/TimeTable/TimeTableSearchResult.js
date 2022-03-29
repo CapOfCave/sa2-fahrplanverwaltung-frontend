@@ -15,6 +15,20 @@ export default function TimeTableSearchResult({stop, time, timespan}){
         { id: 'lastStop', label: 'Endhaltestelle', minWidth: 170 },  
     ]
 
+    function formatDate(dateString){
+      const date = new Date(dateString);
+      var minutes = "00";
+      if(date.getMinutes()<10 && date.getMinutes()!=0){
+        const temp = date.getMinutes() * 10;
+        minutes = temp;
+      }
+      else{
+        minutes = date.getMinutes();
+      }
+      const text = "" + date.getDay() +"."+date.getMonth()+"."+date.getFullYear()+ ", "+date.getHours()+":"+minutes;
+      return text;
+    };
+
     return(
         <div>      
       <TableContainer sx={{ maxHeight: 440, marginTop: 3 }}>
@@ -38,7 +52,7 @@ export default function TimeTableSearchResult({stop, time, timespan}){
                 <TableRow key={[scheduleEntries?.schedule.id, scheduleEntries?.arrival]} className='tablerow'>
                   <TableCell>{scheduleEntries?.schedule.id}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.line.name}</TableCell>
-                  <TableCell>{scheduleEntries?.arrival}</TableCell>
+                  <TableCell>{formatDate(scheduleEntries?.arrival)}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.finalStop.name}</TableCell>
                 </TableRow>
               ))

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Header from "../layout/Header";
 import apiService from '../api/ApiService';
 import TimeTableSearchResult from './TimeTableSearchResult';
+import moment from 'moment';
 
 export default function TimeTableSearch({isStaff, setIsStaff}) {
     const [stop, setStop] = useState(undefined);
@@ -19,6 +20,7 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
 
     const handleDateChange = (newValue) => {
         setDateValue(newValue);
+        moment(newValue).toLocaleString();
     };
 
     const handleStopChange = (e, newValue) => {
@@ -27,7 +29,6 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
 
     const handleTimespanChange = (e) => {
         setTimespan(e.target.value);
-        console.log(timespan)
     };
 
     return (
@@ -67,7 +68,7 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
         />
                 <Button variant="outlined" onClick={(event) => setShowResult(true)} disabled={!stop}>Suchen</Button>
                 { showResult &&
-                <TimeTableSearchResult stop={stop} time={new Date(dateValue).toISOString()} timespan={timespan}/>
+                <TimeTableSearchResult stop={stop} time={new Date(dateValue).toISOString(true)} timespan={timespan}/>
                 }
             </form>
         </div>

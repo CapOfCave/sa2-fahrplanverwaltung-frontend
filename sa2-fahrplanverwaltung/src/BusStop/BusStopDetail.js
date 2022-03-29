@@ -19,8 +19,7 @@ export default function BusStopDetail({ isStaff, setIsStaff }) {
   return (
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff}></Header>
-      <p>BusStopDetail! zu {id} </p>
-      <h1>{id} {busStopDetail?.name}</h1>
+      <h1>Buslinien zur Haltestelle {busStopDetail?.name}</h1>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
