@@ -12,6 +12,7 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
     const [dateValue, setDateValue] = useState(Date());
     const [stops, setStops] = useState([]);
     const [showResult, setShowResult] = useState(false);
+    const [timespan, setTimespan] = useState(0);
 
     useEffect(() => apiService().apiGetAllBusStops().then((result) => setStops(result)), []);
     
@@ -22,6 +23,11 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
 
     const handleStopChange = (e, newValue) => {
         setStop(newValue);
+    };
+
+    const handleTimespanChange = (e) => {
+        setTimespan(e.target.value);
+        console.log(timespan)
     };
 
     return (
@@ -48,9 +54,20 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
                         sx={{ width: 300, marginBottom: 3 }}
                     />
                 </LocalizationProvider>
+                <TextField
+          id="outlined-number"
+          label="Zeitspanne in h"
+          type="number"
+          value={timespan}
+          error={timespan===0}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleTimespanChange}
+        />
                 <Button variant="outlined" onClick={(event) => setShowResult(true)} disabled={!stop}>Suchen</Button>
                 { showResult &&
-                <TimeTableSearchResult stop={stop} time={new Date(dateValue).toISOString()}/>
+                <TimeTableSearchResult stop={stop} time={new Date(dateValue).toISOString()} timespan={timespan}/>
                 }
             </form>
         </div>

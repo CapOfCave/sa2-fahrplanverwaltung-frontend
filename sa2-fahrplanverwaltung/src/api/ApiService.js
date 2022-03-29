@@ -154,9 +154,9 @@ class APIService {
         }
     }
 
-    async apiSearchTimetables(id, time) {
+    async apiSearchTimetables(id, time, timespan) {
         try {
-            const response = await axios.get(BASE_URL + "/busstops/" + id +"/timetable?startTime="+time+"&durationSeconds=3000", {
+            const response = await axios.get(BASE_URL + "/busstops/" + id +"/timetable?startTime="+time+"&durationSeconds="+(timespan*3600), {
                 validateStatus: function (status) {
                     return status <= 400;
                 }

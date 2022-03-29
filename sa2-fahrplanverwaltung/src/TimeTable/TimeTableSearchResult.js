@@ -2,11 +2,11 @@ import apiService from "../api/ApiService";
 import { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
-export default function TimeTableSearchResult({stop, time}){
+export default function TimeTableSearchResult({stop, time, timespan}){
 
     const [scheduleEntries, setScheduleEntries] = useState([]);
 
-    useEffect(() => {if(stop){apiService().apiSearchTimetables(stop?.id, time).then((result) => setScheduleEntries(result.scheduleEntries))}}, [stop, time]);
+    useEffect(() => {if(stop){apiService().apiSearchTimetables(stop?.id, time, timespan).then((result) => setScheduleEntries(result.scheduleEntries))}}, [stop, time, timespan]);
 
     const columns = [
         { id: 'id', label: 'ID', minWidth: 20 },
