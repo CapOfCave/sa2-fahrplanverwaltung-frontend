@@ -17,11 +17,8 @@ export default function BusStopLineSchedule({ isStaff, setIsStaff }) {
     }), [stop, line]);
 
     const columns = [
-        { id: 'id', label: 'ID', minWidth: 20 },
-        { id: 'line', label: 'Buslinie', minWidth: 170 },
-        { id: 'startTime', label: 'Startzeit', minWidth: 170 },
         { id: 'lastStop', label: 'Endhaltestelle', minWidth: 170 },
-        { id: 'arrivalTime', label: 'Ankunftszeit', minWidth: 170 },
+        { id: 'arrivalTime', label: `Ankunftszeit an Haltestelle ${result?.busStop?.name ?? ""}`, minWidth: 170 },
     ]
 
     return (
@@ -50,9 +47,6 @@ export default function BusStopLineSchedule({ isStaff, setIsStaff }) {
                         {
                             scheduleEntries.map((scheduleEntries) => (
                                 <TableRow key={scheduleEntries?.schedule.id} className='tablerow'>
-                                    <TableCell>{scheduleEntries?.schedule.id}</TableCell>
-                                    <TableCell>{scheduleEntries?.schedule.line.name}</TableCell>
-                                    <TableCell>{scheduleEntries?.schedule.startTime}</TableCell>
                                     <TableCell>{scheduleEntries?.schedule.finalStop.name}</TableCell>
                                     <TableCell>{scheduleEntries?.arrival}</TableCell>
                                 </TableRow>

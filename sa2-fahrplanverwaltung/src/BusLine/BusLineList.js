@@ -91,18 +91,6 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
     navigate("/buslines/" + id + "/modify")
   }
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
   return (
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff} />
@@ -151,20 +139,6 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={busLines.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-        {isStaff &&
-          <Button variant="outlined" onClick={newBusLine}>
-            Neue Buslinie anlegen
-          </Button>
-        }
         <CreateBusLine open={showDialog} name={editedBusLine?.name} handleClose={() => closeDialog()} renameLine={renameLine} createNewLine={createLine}></CreateBusLine>
         <DeleteBusLine open={deleteBusLineDialog} name={editedBusLine?.name} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}></DeleteBusLine>
       </Paper>
