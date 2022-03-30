@@ -9,10 +9,11 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import CreateBusLine from "./CreateBusLine";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import Header from "../layout/Header";
 import DeleteBusLine from "./DeleteBusLine";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 5 },
@@ -38,6 +39,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
   const [editedBusLine, setEditedBusLine] = useState(undefined);
   const [showDialog, setShowDialog] = useState(false);
   const [deleteBusLineDialog, setDeleteBusLineDialog] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   function newBusLine() {
     setShowDialog(true);
@@ -52,21 +54,21 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
   function renameLine(name) {
     apiService().apiRenameBusLine(editedBusLine.id, name).then(response => {
       apiService().apiGetAllBusLines().then(((result) => setBusLines(result)), []);
-    });
+    }).catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
   }
 
   function createLine(name) {
     apiService().apiCreateBusLine(name).then(response => {
       apiService().apiGetAllBusLines().then(((result) => setBusLines(result)), []);
-    });
+    }).catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
   }
 
   function confirmDeletion() {
     apiService().apiDeleteBusLine(editedBusLine.id).then(response => {
       apiService().apiGetAllBusLines().then(((result) => setBusLines(result)), []);
-    });
+    }).catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
   }
 
@@ -104,8 +106,15 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
   return (
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff} />
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <h1>Bulinienübersicht</h1>
+      <Divider sx={{ width: '90%', marginLeft: "5%" }}>
+        <h1>Buslinienübersicht</h1>
+        {isStaff &&
+          <Button variant="outlined" onClick={newBusLine} sx={{ marginBottom: 4 }}>
+            Neue Buslinie anlegen
+          </Button>
+        }
+      </Divider>
+      <Paper sx={{ width: '90%', overflow: 'hidden', marginLeft: "5%" }}>
         <TableContainer>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>

@@ -7,6 +7,7 @@ import EditTimeTable from "./EditTimeTable";
 import moment from "moment";
 import { Navigate } from "react-router-dom";
 import CreateTimeTable from "./CreateTimeTable";
+import { useSnackbar } from "notistack";
 
 export default function TimeTableList({isStaff,setIsStaff}){
 
@@ -27,13 +28,17 @@ export default function TimeTableList({isStaff,setIsStaff}){
         { id: 'delete', label: 'Löschen', minWidth: 40 }        
     ]
 
+    const { enqueueSnackbar } = useSnackbar();
+
     function deleteSchedule(schedule){
         setEditedSchedule(schedule);
         setDeleteDialog(true);
     }
 
     function confirmDeletion(){
-      apiService().apiDeleteSchedule(editedSchedule.id).then(response => {
+      apiService().apiDeleteSchedule(editedSchedule.id)
+      .catch(error => enqueueSnackbar(error.response.data, {variant: "error"}))
+      .then(response => {
         apiService().apiGetAllSchedules().then(((result) => setSchedules(result)), []);
       });
       closeDialog();

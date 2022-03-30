@@ -13,6 +13,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import apiService from '../api/ApiService';
 import moment from "moment";
+import { useSnackbar } from 'notistack';
 
 export default function EditTimeTable({ open, handleClose, onSuccess, schedule }) {
 
@@ -21,6 +22,7 @@ export default function EditTimeTable({ open, handleClose, onSuccess, schedule }
   // form elements
   const [time, setTime] = useState(null);
   const [selectedFinalStop, setSelectedFinalStop] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (!schedule?.line?.id) {
@@ -69,6 +71,7 @@ export default function EditTimeTable({ open, handleClose, onSuccess, schedule }
 
   const saveSchedule = () => {   
     apiService().apiUpdateSchedule(schedule.id, time.format("HH:mm"), selectedFinalStop.reverseDirection)
+    .catch(error => enqueueSnackbar(error.response.data, {variant: "error"}))
       .then(response => {
         onSuccess();
         handleClose();
