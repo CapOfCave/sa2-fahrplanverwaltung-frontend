@@ -38,8 +38,9 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
   }
 
   function addDialog(stop, line) {
+    var index = stop + 2
     setEditedBusLine(line)
-    setEditedBusStop(stop)
+    setEditedBusStop(index)
     setAddBusLineDialog(true)
   }
 
@@ -66,12 +67,12 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
           </TableHead>
           <TableBody>
             {
-              busLineDetail?.lineStops.map((stop) => (
+              busLineDetail?.lineStops.map((stop, index) => (
                 <TableRow key={stop.id} className='tablerow'>
                   <TableCell>{stop.id}</TableCell>
                   <TableCell>{stop.busStopName}</TableCell>
                   <TableCell><Button variant="outlined" onClick={(event) => deleteDialog(stop.id, id)} >Haltestelle Löschen</Button></TableCell>
-                  <TableCell><Button variant="outlined" onClick={(event) => addDialog(stop.id, id)} >Haltestelle Hier ↓ Hinzufügen</Button></TableCell>
+                  <TableCell><Button variant="outlined" onClick={(event) => addDialog(index - 1, id)} >Haltestelle Hier ↓ Hinzufügen</Button></TableCell>
                 </TableRow>
               ))
             }
