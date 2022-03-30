@@ -47,7 +47,7 @@ export default function AddBusLineStop({ open, nameStop, nameLine, handleClose, 
             type="text"
             fullWidth
             variant="standard"
-            onChange={(event) => { setStopID(event.target.value) }}
+            onChange={(event) => { setSeconds(event.target.value) }}
           />
         </DialogContent>
         <DialogActions>
