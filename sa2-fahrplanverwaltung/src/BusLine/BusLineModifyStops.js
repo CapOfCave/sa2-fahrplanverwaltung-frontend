@@ -1,61 +1,100 @@
-import { Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Container, Box, Divider, List, IconButton, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, TextField } from '@mui/material';
+import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { Navigate, useParams } from "react-router-dom";
 import apiService from "../api/ApiService";
 import Header from "../layout/Header";
-import Button from '@mui/material/Button';
-import DeleteBusLineStop from "./DeleteBusLineStop";
 import AddBusLineStop from "./AddBusLineStop";
-import { Navigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
+import DeleteBusLineStop from "./DeleteBusLineStop";
+
 
 export default function BusLineModifyStops({ isStaff, setIsStaff }) {
 
   let { id } = useParams();
-  var [editedBusLine, setEditedBusLine] = useState(undefined);
-  var [editedBusStop, setEditedBusStop] = useState(undefined);
-  const [deleteBusLineDialog, setDeleteBusLineDialog] = useState(false);
-  const [addBusLineDialog, setAddBusLineDialog] = useState(false);
-  const [busLineDetail, setBusLineDetail] = useState(null);
+  var [editedLineStop, setEditedLineStop] = useState(null);
+  const [showDeleteBusLineDialog, setDeleteBusLineDialog] = useState(false);
+  const [showAddBusLineDialog, setShowAddBusLineDialog] = useState(false);
+  const [name, setName] = useState(null);
+  const [lineStops, setLineStops] = useState([])
   const { enqueueSnackbar } = useSnackbar();
-  useEffect(() => apiService().getBusLine(id).then((result) => setBusLineDetail(result)), []);
+
+  const [targetIndex, setTargetIndex] = useState(0);
+
+  useEffect(() => apiService().getBusLine(id).then((result) => {
+    setLineStops(result.lineStops);
+    setName(result.name)
+  }), []);
 
   const [allBusStops, setAllBusStops] = useState([]);
   useEffect(() => apiService().apiGetAllBusStops().then(result => setAllBusStops(result)), []);
 
-
-  function deleteBusStopFromLine(stop, line) {
-    apiService().apiDeleteLineStop(stop, line).then(refresh)
+  function removeBusStopFromLine(busStopId) {
+    apiService().apiDeleteLineStop(busStopId, id)
+      .then(refresh)
       .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
   }
 
   function refresh() {
-    apiService().getBusLine(id).then(((result) => setBusLineDetail(result)), []);
+    apiService().getBusLine(id).then(((result) => {
+      setLineStops(result.lineStops);
+      setName(result.name)
+    }), []);
   }
 
-  function deleteDialog(stop, line) {
-    setEditedBusLine(line)
-    setEditedBusStop(stop)
+  function displayAddDialog(index) {
+    setTargetIndex(index);
+    setShowAddBusLineDialog(true);
+  }
+
+  function displayDeleteDialog(lineStop) {
+    setEditedLineStop(lineStop)
     setDeleteBusLineDialog(true)
-  }
-
-  function addDialogCall(stop, line) {
-    var index = stop + 1
-    addDialog(index, line)
-  }
-
-  function addDialog(stop, line) {
-    setEditedBusLine(line)
-    setEditedBusStop(stop)
-    setAddBusLineDialog(true)
   }
 
   function closeDialog() {
     setDeleteBusLineDialog(false)
-    setAddBusLineDialog(false)
-    setEditedBusLine(undefined)
-    setEditedBusStop(undefined)
+    setShowAddBusLineDialog(false)
+    setEditedLineStop(undefined)
+  }
+
+
+
+  // helper function for client-side prediction of reorder result
+  const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  function onDragEnd(result) {
+    // dropped outside the list
+    if (!result.destination) return
+    setLineStops(reorder(lineStops, result.source.index, result.destination.index))
+    apiService().apiPatchLineStop(result.draggableId, id, undefined, result.destination.index)
+
+  }
+
+  const getItemStyle = (isDragging, draggableStyle) => ({
+    // styles to apply on draggables
+    ...draggableStyle,
+
+    ...(isDragging && {
+      background: "rgb(235,235,235)"
+    })
+  });
+
+  const updateSecondsToNextStop = (event, lineStopToEdit) => {
+    const secondsToNextStop = event.target.value * 60
+    const newLineStop = { ...lineStopToEdit, secondsToNextStop };
+    setLineStops(lineStops => lineStops.map(lineStop => lineStop.id === lineStopToEdit.id ? newLineStop : lineStop));
+    apiService().apiPatchLineStop(lineStopToEdit.id, id, secondsToNextStop, undefined)
   }
 
 
@@ -68,51 +107,98 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
   return (
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff}></Header>
-      <Divider sx={{ width: '90%', marginLeft: "5%" }}>
-        <h1>Bearbeitung der Linie: {busLineDetail?.name}</h1>
-      </Divider>
-      <Paper sx={{ width: '90%', overflow: 'hidden', marginLeft: "5%" }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell key={id}>ID</TableCell>
-                <TableCell>Haltestelle</TableCell>
-                <TableCell>Fahrtzeit zur nächsten Haltestelle (in Minuten)</TableCell>
-                <TableCell>Haltestelle Löschen</TableCell>
-                <TableCell><Button variant="outlined" onClick={(event) => addDialog(0, id)} >Haltestelle Hier ↓ Hinzufügen</Button></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {
-                busLineDetail?.lineStops.map((stop, index) => (
-                  <TableRow key={stop.id} className='tablerow'>
-                    <TableCell>{stop.id}</TableCell>
-                    <TableCell>{stop.busStopName}</TableCell>
-                    <TableCell>{stop.secondsToNextStop / 60}</TableCell>
-                    <TableCell><Button variant="outlined" onClick={(event) => deleteDialog(stop.id, id)} >Haltestelle Löschen</Button></TableCell>
-                    <TableCell><Button variant="outlined" onClick={(event) => addDialogCall(index, id)} >Haltestelle Hier ↓ Hinzufügen</Button></TableCell>
-                  </TableRow>
-                ))
-              }
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
+
+
+      <Container maxWidth="lg" sx={{ paddingTop: '2rem' }}>
+        <Divider sx={{ width: '90%', marginLeft: "5%" }}>
+          <h1>Bearbeitung der Linie: {name}</h1>
+        </Divider>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(droppableProvided, droppableSnapshot) => (
+              <List ref={droppableProvided.innerRef}>
+                {lineStops.map((lineStop, index) => (
+                  <Draggable key={lineStop.id} draggableId={lineStop.id.toString()} index={index}>
+                    {(provided, snapshot) => (
+                      <ListItem
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={getItemStyle(
+                          snapshot.isDragging,
+                          provided.draggableProps.style
+                        )}
+                        sx={{
+                          minHeight: '4rem',
+                        }}
+
+                      >
+                        <ListItemIcon>
+                          <ApartmentIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={lineStop.busStopName}
+                        />
+                        <ListItemSecondaryAction sx={{ display: droppableSnapshot.isDraggingOver ? "none" : undefined }}>
+                          <TextField
+                            value={lineStop.secondsToNextStop / 60 ?? null}
+                            onChange={(event) => updateSecondsToNextStop(event, lineStop)}
+                            label="Minuten zum nächsten Halt"
+                            size="small"
+                            sx={{ width: '15rem' }}
+                            type="number"
+                            variant="outlined"
+                          />
+                          <IconButton onClick={() => displayDeleteDialog(lineStop)}>
+                            <DeleteIcon />
+                          </IconButton>
+
+                          <IconButton sx={{ position: 'relative', bottom: '2rem' }} onClick={() => displayAddDialog(index)}>
+                            <AddCircleOutlineIcon />
+                          </IconButton>
+
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    )}
+                  </Draggable>
+
+                ))}
+                {droppableProvided.placeholder}
+                <Box sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  paddingRight: '16px',
+                  boxSizing: 'border-box'
+                }}>
+                  <IconButton
+                    onClick={() => displayAddDialog(lineStops.length)}
+                    sx={{ position: 'relative', bottom: '1rem', display: droppableSnapshot.isDraggingOver ? "none" : undefined }}>
+                    <AddCircleOutlineIcon />
+                  </IconButton>
+                </Box>
+              </List>
+
+            )}
+          </Droppable>
+        </DragDropContext>
+
+
+      </Container>
+
       <DeleteBusLineStop
-        open={deleteBusLineDialog}
-        nameStop={editedBusStop}
-        nameLine={editedBusLine}
-        handleClose={() => closeDialog()}
-        confirmDeletion={() => deleteBusStopFromLine(editedBusStop, editedBusLine)}></DeleteBusLineStop>
+        open={showDeleteBusLineDialog}
+        lineStop={editedLineStop}
+        handleClose={closeDialog}
+        confirmDeletion={() => removeBusStopFromLine(editedLineStop.id)}></DeleteBusLineStop>
+
       <AddBusLineStop
-        open={addBusLineDialog}
+        open={showAddBusLineDialog}
         allBusStops={allBusStops}
-        close={() => setAddBusLineDialog(false)}
         onSuccess={refresh}
-        target={editedBusStop}
-        line={editedBusLine}
-        handleClose={() => closeDialog()}></AddBusLineStop>
+        targetIndex={targetIndex}
+        lineId={id}
+        handleClose={closeDialog}></AddBusLineStop>
     </div>
   );
 }
