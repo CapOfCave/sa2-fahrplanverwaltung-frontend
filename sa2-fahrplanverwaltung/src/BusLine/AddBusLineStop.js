@@ -19,7 +19,7 @@ export default function AddBusLineStop({ open, nameStop, nameLine, handleClose, 
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Tragen sie die Details der hinzuzufügenden Bushaltestelle vor der Bushaltestelle ${nameStop} in der Linie ${nameLine} ein`}
+          {`Tragen sie die Details der hinzuzufügenden Bushaltestelle nach der Bushaltestelle ${nameStop} in der Linie ${nameLine} ein`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -37,14 +37,6 @@ export default function AddBusLineStop({ open, nameStop, nameLine, handleClose, 
             margin="dense"
             id="seconds"
             label="Sekunden bis zum nächsten Stop"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            margin="dense"
-            id="name"
-            label="Email Address"
             type="text"
             fullWidth
             variant="standard"

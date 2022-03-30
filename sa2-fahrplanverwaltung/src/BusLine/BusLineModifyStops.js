@@ -23,6 +23,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
     })
     closeDialog();
   }
+
   function AddBusStopToLine(line, stop, time, target) {
     apiService().apiAddLineStop(line, stop, time, target).then(response => {
       apiService().getBusLine(line).then(((result) => setBusLineDetail(result)), []);
@@ -53,7 +54,6 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff}></Header>
       <h1>Modify zur Linie: {busLineDetail?.name}</h1>
-      <Button variant="outlined">Haltestelle am Ende Hinzufügen</Button>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -61,7 +61,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
               <TableCell key={id}>ID</TableCell>
               <TableCell>Haltestelle</TableCell>
               <TableCell>Haltestelle Löschen</TableCell>
-              <TableCell>Haltestelle Einfügen</TableCell>
+              <TableCell><Button variant="outlined" onClick={(event) => addDialog(0, id)} >Haltestelle Hier ↓ Hinzufügen</Button></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -71,7 +71,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
                   <TableCell>{stop.id}</TableCell>
                   <TableCell>{stop.busStopName}</TableCell>
                   <TableCell><Button variant="outlined" onClick={(event) => deleteDialog(stop.id, id)} >Haltestelle Löschen</Button></TableCell>
-                  <TableCell><Button variant="outlined" onClick={(event) => addDialog(stop.id, id)} >Haltestelle Hier Hinzufügen</Button></TableCell>
+                  <TableCell><Button variant="outlined" onClick={(event) => addDialog(stop.id, id)} >Haltestelle Hier ↓ Hinzufügen</Button></TableCell>
                 </TableRow>
               ))
             }
@@ -79,7 +79,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
         </Table>
       </TableContainer>
       <DeleteBusLineStop open={deleteBusLineDialog} nameStop={editedBusStop} nameLine={editedBusLine} handleClose={() => closeDialog()} confirmDeletion={() => deleteBusStopFromLine(editedBusStop, editedBusLine)}></DeleteBusLineStop>
-      <AddBusLineStop open={addBusLineDialog} nameStop={editedBusStop} nameLine={editedBusLine} handleClose={() => closeDialog()} confirmDeletion={() => deleteBusStopFromLine(editedBusStop, editedBusLine)}></AddBusLineStop>
+      <AddBusLineStop open={addBusLineDialog} nameStop={editedBusStop} nameLine={editedBusLine} handleClose={() => closeDialog()} confirmAddition={() => AddBusStopToLine(editedBusLine, 1, 60, editedBusStop)}></AddBusLineStop>
     </div>
   );
 }
