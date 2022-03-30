@@ -9,10 +9,11 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import CreateBusStop from "./CreateBusStop";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import Header from "../layout/Header";
 import DeleteBusStop from "./DeleteBusStop";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 5 },
@@ -46,6 +47,8 @@ export default function BusStopList({ isStaff, setIsStaff }) {
   const [showDialog, setShowDialog] = useState(false);
   const [deleteBusStopDialog, setDeleteBusStopDialog] = useState(false);
 
+  const { enqueueSnackbar } = useSnackbar();
+
   function newBusStop() {
     setShowDialog(true);
   }
@@ -59,21 +62,21 @@ export default function BusStopList({ isStaff, setIsStaff }) {
   function renameStop(name) {
     apiService().apiRenameBusStop(editedBusStop.id, name).then(response => {
       apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
-    });
+    }).catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
     closeDialog();
   }
 
   function createStop(name) {
     apiService().apiCreateBusStop(name).then(response => {
       apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
-    });
+    }).catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
     closeDialog();
   }
 
   function confirmDeletion() {
     apiService().apiDeleteBusStop(editedBusStop.id).then(response => {
       apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
-    });
+    }).catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
     closeDialog();
   }
 
@@ -107,8 +110,15 @@ export default function BusStopList({ isStaff, setIsStaff }) {
   return (
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff} />
+      <Divider sx={{ width: '90%', marginLeft: "5%"}}>
       <h1>Bushaltestellen</h1>
-      <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: 2 }}>
+      {isStaff &&
+          <Button variant="outlined" onClick={newBusStop} sx={{ marginBottom: 4}}>
+            Neue Haltestelle anlegen
+          </Button>
+        }
+      </Divider>
+      <Paper sx={{ width: '90%', overflow: 'hidden', marginLeft: "5%" }}>
         <TableContainer>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -151,11 +161,7 @@ export default function BusStopList({ isStaff, setIsStaff }) {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        {isStaff &&
-          <Button variant="outlined" onClick={newBusStop}>
-            Neue Haltestelle anlegen
-          </Button>
-        }
+        
         <CreateBusStop open={showDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} renameStop={renameStop} createNewStop={createStop}></CreateBusStop>
         <DeleteBusStop open={deleteBusStopDialog} name={editedBusStop?.name} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}></DeleteBusStop>
       </Paper>

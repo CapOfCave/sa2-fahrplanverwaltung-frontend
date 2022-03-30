@@ -101,20 +101,15 @@ class APIService {
     }
 
     async apiDeleteBusStop(id) {
-        try {
             const response = await axios.delete(BASE_URL + "/busstops/" + id, {
                 validateStatus: function (status) {
                     return status <= 400;
                 }
             });
             return response.data;
-        } catch (error) {
-            alert(error.response.data);
-        }
     }
 
     async apiRenameBusStop(id, name) {
-        try {
             const response = await axios.patch(BASE_URL + "/busstops/" + id, {
                     "name" : name,
                 validateStatus: function (status) {
@@ -122,13 +117,9 @@ class APIService {
                 }
             });
             return response.data;
-        } catch (error) {
-            alert(error.response.data);
-        }
     }
 
     async apiCreateBusStop(name) {
-        try {
             const response = await axios.post(BASE_URL + "/busstops", {
                     "name" : name,
                 validateStatus: function (status) {
@@ -136,9 +127,6 @@ class APIService {
                 }
             });
             return response.data;
-        } catch (error) {
-            alert(error.response.data);
-        }
     }
 
     async apiGetAllSchedules() {

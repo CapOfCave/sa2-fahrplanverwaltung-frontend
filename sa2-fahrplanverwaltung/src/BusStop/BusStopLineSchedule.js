@@ -1,6 +1,6 @@
 import apiService from "../api/ApiService";
 import { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../layout/Header";
 
@@ -8,8 +8,13 @@ export default function BusStopLineSchedule({ isStaff, setIsStaff }) {
 
     let { stop, line } = useParams();
 
+    const [result, setResult] = useState([]);
     const [scheduleEntries, setScheduleEntries] = useState([]);
-    useEffect(() => apiService().apiGetBusStopLineSchedules(stop, line).then((result) => setScheduleEntries(result.scheduleEntries)), [stop, line]);
+    useEffect(() => apiService().apiGetBusStopLineSchedules(stop, line).then((result) => 
+    {
+        setResult(result);
+        setScheduleEntries(result?.scheduleEntries);
+    }), [stop, line]);
 
     const columns = [
         { id: 'id', label: 'ID', minWidth: 20 },
@@ -22,7 +27,11 @@ export default function BusStopLineSchedule({ isStaff, setIsStaff }) {
     return (
         <div>
             <Header isStaff={isStaff} setIsStaff={setIsStaff} />
-            <TableContainer sx={{ maxHeight: 440, marginTop: 3 }}>
+            <Divider sx={{ width: '90%', marginLeft: "5%"}}>
+            <h1>Fahrpläne der Linie {result?.line?.name} zur Haltestelle {result?.busStop?.name}</h1>
+            </Divider>
+            <Paper sx={{ width: '90%', overflow: 'hidden', marginLeft: "5%" }}>
+            <TableContainer>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -52,6 +61,7 @@ export default function BusStopLineSchedule({ isStaff, setIsStaff }) {
                     </TableBody>
                 </Table>
             </TableContainer>
+            </Paper>
         </div>
     );
 }

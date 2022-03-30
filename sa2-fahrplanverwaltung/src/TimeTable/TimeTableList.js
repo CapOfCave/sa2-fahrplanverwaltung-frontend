@@ -1,7 +1,7 @@
 import Header from "../layout/Header";
 import apiService from "../api/ApiService";
 import { useState, useEffect } from 'react';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Button, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import DeleteTimeTable from "./DeleteTimeTable"
 import EditTimeTable from "./EditTimeTable";
 import moment from "moment";
@@ -67,11 +67,14 @@ export default function TimeTableList({isStaff,setIsStaff}){
     return(
         <div>
             <Header isStaff={isStaff} setIsStaff={setIsStaff}/>
-        <Paper sx={{ width: '90%', overflow: 'hidden', marginLeft: "5%"}}>
-          <h1>Fahrplanverwaltung</h1>
+            <Divider sx={{ width: '90%', marginLeft: "5%"}}>
+            <h1>Fahrplanverwaltung</h1>
         <Button variant="outlined" onClick={(event) => createSchedule()} sx={{ marginBottom: 4}}>
         Neuen Fahrplan anlegen
       </Button>
+      </Divider>
+        <Paper sx={{ width: '90%', overflow: 'hidden', marginLeft: "5%"}}>
+          
       <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
