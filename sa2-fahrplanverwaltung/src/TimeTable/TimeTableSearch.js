@@ -1,14 +1,14 @@
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import { Autocomplete, Button, TextField } from "@mui/material";
+import { Autocomplete, Button, Divider, Paper, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import Header from "../layout/Header";
 import apiService from '../api/ApiService';
 import TimeTableSearchResult from './TimeTableSearchResult';
 import moment from 'moment';
 
-export default function TimeTableSearch({isStaff, setIsStaff}) {
+export default function TimeTableSearch({ isStaff, setIsStaff }) {
     const [stop, setStop] = useState(undefined);
     const [dateValue, setDateValue] = useState(Date());
     const [stops, setStops] = useState([]);
@@ -16,7 +16,7 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
     const [timespan, setTimespan] = useState(0);
 
     useEffect(() => apiService().apiGetAllBusStops().then((result) => setStops(result)), []);
-    
+
 
     const handleDateChange = (newValue) => {
         setDateValue(newValue);
@@ -33,7 +33,10 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
     return (
         <div>
             <Header isStaff={isStaff} setIsStaff={setIsStaff} />
+            <Divider sx={{ width: '90%', marginLeft: "5%"}}>
             <h1>Fahrplanauskunft</h1>
+            </Divider>
+            <Paper sx={{ width: '90%', marginLeft: "5%"}}>
             <form>
                 <Autocomplete
                     disablePortal
@@ -55,21 +58,28 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
                     />
                 </LocalizationProvider>
                 <TextField
-          id="outlined-number"
-          label="Zeitspanne in h"
-          type="number"
-          value={timespan}
-          error={timespan===0}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          onChange={handleTimespanChange}
-        />
-                <Button variant="outlined" onClick={(event) => setShowResult(true)} disabled={!stop}>Suchen</Button>
-                { showResult &&
-                <TimeTableSearchResult stop={stop} time={moment(dateValue).format()} timespan={timespan}/>
+                    id="outlined-number"
+                    label="Zeitspanne in h"
+                    type="number"
+                    value={timespan}
+                    error={timespan === 0}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={handleTimespanChange}
+                />
+                <Button 
+                variant="outlined" 
+                onClick={(event) => setShowResult(true)} 
+                disabled={!stop}>Suchen</Button>
+                {showResult &&
+                    <TimeTableSearchResult 
+                    stop={stop} 
+                    time={moment(dateValue).format()} 
+                    timespan={timespan} />
                 }
             </form>
+            </Paper>
         </div>
     );
 }
