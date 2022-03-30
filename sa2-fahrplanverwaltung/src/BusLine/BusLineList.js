@@ -22,7 +22,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
 
   if (isStaff && columns.length < 3) {
     columns.push(
-      { id: 'modify', label: 'Haltestellen Bearbeiten', minWidth: 10 },
+      { id: 'modify', label: 'Buslinie Bearbeiten', minWidth: 10 },
       { id: 'rename', label: 'Umbennenen', minWidth: 10 },
       { id: 'delete', label: 'Löschen', minWidth: 10 },
     )
@@ -152,10 +152,10 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
         {isStaff &&
-        <Button variant="outlined" onClick={newBusLine}>
-          Neue Buslinie anlegen
-        </Button>
-}
+          <Button variant="outlined" onClick={newBusLine}>
+            Neue Buslinie anlegen
+          </Button>
+        }
         <CreateBusLine open={showDialog} name={editedBusLine?.name} handleClose={() => closeDialog()} renameLine={renameLine} createNewLine={createLine}></CreateBusLine>
         <DeleteBusLine open={deleteBusLineDialog} name={editedBusLine?.name} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}></DeleteBusLine>
       </Paper>

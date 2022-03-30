@@ -6,6 +6,7 @@ import Header from "../layout/Header";
 import Button from '@mui/material/Button';
 import DeleteBusLineStop from "./DeleteBusLineStop";
 import AddBusLineStop from "./AddBusLineStop";
+import { Navigate } from "react-router-dom";
 
 export default function BusLineModifyStops({ isStaff, setIsStaff }) {
 
@@ -53,6 +54,13 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
     setAddBusLineDialog(false)
     setEditedBusLine(undefined)
     setEditedBusStop(undefined)
+  }
+
+
+  if (!isStaff) {
+    return (
+      <Navigate to="/buslines" />
+    );
   }
 
   return (
