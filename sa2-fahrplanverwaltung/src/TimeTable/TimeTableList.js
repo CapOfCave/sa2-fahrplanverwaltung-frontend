@@ -19,12 +19,12 @@ export default function TimeTableList({isStaff,setIsStaff}){
     useEffect(() => apiService().apiGetAllSchedules().then((result) => setSchedules(result)), []);
 
     const columns = [
-        { id: 'id', label: 'ID', minWidth: 20 },
-        { id: 'lastStop', label: 'Endhaltestelle', minWidth: 170 },
-        { id: 'line', label: 'Buslinie', minWidth: 170 },
-        { id: 'startTime', label: 'Startzeit', minWidth: 170 },
-        { id: 'edit', label: 'Bearbeiten', minWidth: 100 },
-        { id: 'delete', label: 'Löschen', minWidth: 100 }        
+        { id: 'id', label: 'ID', minWidth: 10 },
+        { id: 'lastStop', label: 'Endhaltestelle', minWidth: 100 },
+        { id: 'line', label: 'Buslinie', minWidth: 100 },
+        { id: 'startTime', label: 'Startzeit', minWidth: 40 },
+        { id: 'edit', label: 'Bearbeiten', minWidth: 40 },
+        { id: 'delete', label: 'Löschen', minWidth: 40 }        
     ]
 
     function deleteSchedule(schedule){
@@ -67,8 +67,11 @@ export default function TimeTableList({isStaff,setIsStaff}){
     return(
         <div>
             <Header isStaff={isStaff} setIsStaff={setIsStaff}/>
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      
+        <Paper sx={{ width: '90%', overflow: 'hidden', marginLeft: "5%"}}>
+          <h1>Fahrplanverwaltung</h1>
+        <Button variant="outlined" onClick={(event) => createSchedule()} sx={{ marginBottom: 4}}>
+        Neuen Fahrplan anlegen
+      </Button>
       <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -100,9 +103,6 @@ export default function TimeTableList({isStaff,setIsStaff}){
           </TableBody>
         </Table>
       </TableContainer>
-      <Button variant="outlined" onClick={(event) => createSchedule()}>
-        Neuen Fahrplan anlegen
-      </Button>
       <DeleteTimeTable open={deleteDialog} id={editedSchedule?.id} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}/>
       <EditTimeTable 
           open={editDialog} 

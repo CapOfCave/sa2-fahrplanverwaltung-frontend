@@ -105,6 +105,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff} />
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <h1>Bulinienübersicht</h1>
         <TableContainer>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -150,9 +151,11 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
+        {isStaff &&
         <Button variant="outlined" onClick={newBusLine}>
           Neue Buslinie anlegen
         </Button>
+}
         <CreateBusLine open={showDialog} name={editedBusLine?.name} handleClose={() => closeDialog()} renameLine={renameLine} createNewLine={createLine}></CreateBusLine>
         <DeleteBusLine open={deleteBusLineDialog} name={editedBusLine?.name} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}></DeleteBusLine>
       </Paper>

@@ -100,7 +100,7 @@ export default function Header({ isStaff, setIsStaff }) {
 
   return (
     <header>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, width: "100%" }}>
         <AppBar position="static">
           <Toolbar>
             {getMenuButtons()}

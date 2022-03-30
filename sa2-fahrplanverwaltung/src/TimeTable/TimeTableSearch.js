@@ -33,7 +33,7 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
     return (
         <div>
             <Header isStaff={isStaff} setIsStaff={setIsStaff} />
-            <p>TimeTableSearch</p>
+            <h1>Fahrplanauskunft</h1>
             <form>
                 <Autocomplete
                     disablePortal
