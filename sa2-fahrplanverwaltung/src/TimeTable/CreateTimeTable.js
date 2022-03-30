@@ -13,6 +13,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import apiService from '../api/ApiService';
 import moment from "moment";
+import { useSnackbar } from 'notistack';
 
 export default function CreateTimeTable({ open, handleClose, onSuccess }) {
 
@@ -24,6 +25,7 @@ export default function CreateTimeTable({ open, handleClose, onSuccess }) {
   const [selectedLine, setSelectedLine] = useState(null);
   const [time, setTime] = useState(null);
   const [selectedFinalStop, setSelectedFinalStop] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   // when a line is selected, set available final stops
   useEffect(() => {
@@ -71,7 +73,8 @@ export default function CreateTimeTable({ open, handleClose, onSuccess }) {
 
   const saveSchedule = () => {
     apiService().apiCreateSchedule(selectedLine.id, moment(new Date(time).toISOString()).format("HH:mm"), selectedFinalStop.reverseDirection)
-      .then(response => {
+    .catch(error => enqueueSnackbar(error.response.data, {variant: "error"}))  
+    .then(response => {
         onSuccess();
         handleClose();
       });

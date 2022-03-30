@@ -13,6 +13,7 @@ import { Button, Divider } from "@mui/material";
 import Header from "../layout/Header";
 import DeleteBusLine from "./DeleteBusLine";
 import { useNavigate } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 5 },
@@ -38,6 +39,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
   const [editedBusLine, setEditedBusLine] = useState(undefined);
   const [showDialog, setShowDialog] = useState(false);
   const [deleteBusLineDialog, setDeleteBusLineDialog] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   function newBusLine() {
     setShowDialog(true);
@@ -52,21 +54,21 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
   function renameLine(name) {
     apiService().apiRenameBusLine(editedBusLine.id, name).then(response => {
       apiService().apiGetAllBusLines().then(((result) => setBusLines(result)), []);
-    });
+    }).catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
     closeDialog();
   }
 
   function createLine(name) {
     apiService().apiCreateBusLine(name).then(response => {
       apiService().apiGetAllBusLines().then(((result) => setBusLines(result)), []);
-    });
+    }).catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
     closeDialog();
   }
 
   function confirmDeletion() {
     apiService().apiDeleteBusLine(editedBusLine.id).then(response => {
       apiService().apiGetAllBusLines().then(((result) => setBusLines(result)), []);
-    });
+    }).catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
     closeDialog();
   }
 

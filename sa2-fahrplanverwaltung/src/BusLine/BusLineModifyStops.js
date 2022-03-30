@@ -6,6 +6,7 @@ import Header from "../layout/Header";
 import Button from '@mui/material/Button';
 import DeleteBusLineStop from "./DeleteBusLineStop";
 import AddBusLineStop from "./AddBusLineStop";
+import { useSnackbar } from "notistack";
 
 export default function BusLineModifyStops({ isStaff, setIsStaff }) {
 
@@ -15,6 +16,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
   const [deleteBusLineDialog, setDeleteBusLineDialog] = useState(false);
   const [addBusLineDialog, setAddBusLineDialog] = useState(false);
   const [busLineDetail, setBusLineDetail] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => apiService().getBusLine(id).then((result) => setBusLineDetail(result)), []);
 
   const [allBusStops, setAllBusStops] = useState([]);
@@ -23,6 +25,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
 
   function deleteBusStopFromLine(stop, line) {
     apiService().apiDeleteLineStop(stop, line).then(refresh)
+    .catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
     closeDialog();
   }
 
