@@ -20,7 +20,6 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
 
     const handleDateChange = (newValue) => {
         setDateValue(newValue);
-        moment(newValue).toLocaleString();
     };
 
     const handleStopChange = (e, newValue) => {
@@ -68,7 +67,7 @@ export default function TimeTableSearch({isStaff, setIsStaff}) {
         />
                 <Button variant="outlined" onClick={(event) => setShowResult(true)} disabled={!stop}>Suchen</Button>
                 { showResult &&
-                <TimeTableSearchResult stop={stop} time={new Date(dateValue).toISOString(true)} timespan={timespan}/>
+                <TimeTableSearchResult stop={stop} time={moment(dateValue).format()} timespan={timespan}/>
                 }
             </form>
         </div>

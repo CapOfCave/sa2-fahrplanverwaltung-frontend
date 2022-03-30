@@ -1,6 +1,7 @@
 import apiService from "../api/ApiService";
 import { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import moment from "moment";
 
 export default function TimeTableSearchResult({stop, time, timespan}){
 
@@ -25,6 +26,7 @@ export default function TimeTableSearchResult({stop, time, timespan}){
       else{
         minutes = date.getMinutes();
       }
+      console.log(moment(date).format("DD.MM.YYYY HH:mm"));
       const text = "" + date.getDay() +"."+date.getMonth()+"."+date.getFullYear()+ ", "+date.getHours()+":"+minutes;
       return text;
     };
@@ -52,7 +54,7 @@ export default function TimeTableSearchResult({stop, time, timespan}){
                 <TableRow key={[scheduleEntries?.schedule.id, scheduleEntries?.arrival]} className='tablerow'>
                   <TableCell>{scheduleEntries?.schedule.id}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.line.name}</TableCell>
-                  <TableCell>{formatDate(scheduleEntries?.arrival)}</TableCell>
+                  <TableCell>{moment(scheduleEntries?.arrival).format("DD.MM.YYYY HH:mm")}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.finalStop.name}</TableCell>
                 </TableRow>
               ))

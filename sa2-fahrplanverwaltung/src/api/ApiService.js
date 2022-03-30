@@ -155,6 +155,7 @@ class APIService {
     }
 
     async apiSearchTimetables(id, time, timespan) {
+        time = time.substring(0, 19).concat("Z");
         try {
             const response = await axios.get(BASE_URL + "/busstops/" + id +"/timetable?startTime="+time+"&durationSeconds="+(timespan*3600), {
                 validateStatus: function (status) {
