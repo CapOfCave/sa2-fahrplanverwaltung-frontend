@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import CreateBusLine from "./CreateBusLine";
-import { Button } from "@mui/material";
+import { Button, Divider } from "@mui/material";
 import Header from "../layout/Header";
 import DeleteBusLine from "./DeleteBusLine";
 import { useNavigate } from "react-router-dom";
@@ -104,8 +104,15 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
   return (
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff} />
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <h1>Bulinienübersicht</h1>
+      <Divider sx={{ width: '90%', marginLeft: "5%"}}>
+        <h1>Buslinienübersicht</h1>
+        {isStaff &&
+        <Button variant="outlined" onClick={newBusLine} sx={{ marginBottom: 4}}>
+          Neue Buslinie anlegen
+        </Button>
+        }
+        </Divider>
+        <Paper sx={{ width: '90%', overflow: 'hidden', marginLeft: "5%" }}>
         <TableContainer>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -151,11 +158,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        {isStaff &&
-        <Button variant="outlined" onClick={newBusLine}>
-          Neue Buslinie anlegen
-        </Button>
-}
+        
         <CreateBusLine open={showDialog} name={editedBusLine?.name} handleClose={() => closeDialog()} renameLine={renameLine} createNewLine={createLine}></CreateBusLine>
         <DeleteBusLine open={deleteBusLineDialog} name={editedBusLine?.name} handleClose={() => closeDialog()} confirmDeletion={() => confirmDeletion()}></DeleteBusLine>
       </Paper>

@@ -1,6 +1,6 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import apiService from "../api/ApiService";
 import Header from "../layout/Header";
 import Button from '@mui/material/Button';
@@ -19,11 +19,6 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
 
   function deleteBusStopFromLine(stop, line) {
     apiService().apiDeleteLineStop(stop, line).then(refresh)
-    closeDialog();
-  }
-
-  function AddBusStopToLine(line, stop, time, target) {
-    apiService().apiAddLineStop(line, stop, time, target).then(refresh)
     closeDialog();
   }
 
@@ -58,7 +53,10 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
   return (
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff}></Header>
-      <h1>Modify zur Linie: {busLineDetail?.name}</h1>
+      <Divider sx={{ width: '90%', marginLeft: "5%"}}>
+      <h1>Bearbeitung der Linie: {busLineDetail?.name}</h1>
+      </Divider>
+      <Paper sx={{ width: '90%', overflow: 'hidden', marginLeft: "5%" }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -85,6 +83,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
           </TableBody>
         </Table>
       </TableContainer>
+      </Paper>
       <DeleteBusLineStop
         open={deleteBusLineDialog}
         nameStop={editedBusStop}
