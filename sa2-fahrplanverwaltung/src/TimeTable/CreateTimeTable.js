@@ -2,7 +2,7 @@ import { TimePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import deLocale from 'date-fns/locale/de';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { Autocomplete, Box } from '@mui/material';
+import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';

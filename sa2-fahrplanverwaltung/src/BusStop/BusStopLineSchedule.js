@@ -1,7 +1,7 @@
 import apiService from "../api/ApiService";
 import { useState, useEffect } from 'react';
 import { Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../layout/Header";
 
 export default function BusStopLineSchedule({ isStaff, setIsStaff }) {
