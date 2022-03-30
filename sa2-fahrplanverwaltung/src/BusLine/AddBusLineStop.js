@@ -7,9 +7,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import apiService from '../api/ApiService';
+import { useState } from 'react';
 
 export default function AddBusLineStop({ open, nameStop, nameLine, handleClose, confirmAddition }) {
 
+
+  const [stopID, setStopID] = useState('');
+  const [seconds, setSeconds] = useState('');
 
 
   return (
@@ -34,6 +38,7 @@ export default function AddBusLineStop({ open, nameStop, nameLine, handleClose, 
             type="text"
             fullWidth
             variant="standard"
+            onChange={(event) => { setStopID(event.target.value) }}
           />
           <TextField
             margin="dense"
@@ -42,6 +47,7 @@ export default function AddBusLineStop({ open, nameStop, nameLine, handleClose, 
             type="text"
             fullWidth
             variant="standard"
+            onChange={(event) => { setStopID(event.target.value) }}
           />
         </DialogContent>
         <DialogActions>
