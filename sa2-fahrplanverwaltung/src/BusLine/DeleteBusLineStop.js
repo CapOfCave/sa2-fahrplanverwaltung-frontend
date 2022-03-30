@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import apiService from '../api/ApiService';
 
-export default function deleteBusLine({ open, nameStop, nameLine, handleClose, confirmDeletion }) {
+export default function deleteBusLineStop({ open, nameStop, nameLine, handleClose, confirmDeletion }) {
 
   return (
     <div>
@@ -22,7 +22,7 @@ export default function deleteBusLine({ open, nameStop, nameLine, handleClose, c
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Gelöschte Haltestellen können nicht an dieser Position wiederhergestellt werden.
+            Gelöschte Haltestellen können nicht wiederhergestellt werden.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

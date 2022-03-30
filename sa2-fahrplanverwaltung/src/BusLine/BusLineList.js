@@ -134,7 +134,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
                       <TableCell><Button variant="outlined" onClick={(event) => editBusLine(line)} >Umbenennen</Button></TableCell>
                     }
                     {isStaff &&
-                      <TableCell><Button onClick={(event) => deleteBusLine(line)}>Löschen</Button></TableCell>
+                      <TableCell><Button variant="outlined" onClick={(event) => deleteBusLine(line)}>Löschen</Button></TableCell>
                     }
                   </TableRow>
                 ))

@@ -7,6 +7,35 @@ export default function apiService() {
 }
 
 class APIService {
+    async apiDeleteLineStop(stopid, lineid) {
+        try {
+            const response = await axios.delete(BASE_URL + "/lines/" + lineid + "/busstops/" + stopid, {
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.response.data);
+        }
+    }
+
+    async apiAddLineStop(line, stop, time, target) {
+        try {
+            const response = await axios.post(BASE_URL + "/lines/" + line + "/busstops", {
+                "busStopId": stop,
+                "secondsToNextStop": time,
+                "targetIndex": target,
+                validateStatus: function (status) {
+                    return status <= 400;
+                }
+            });
+            return response.data;
+        } catch (error) {
+            alert(error.response.data);
+        }
+    }
+
     async apiGetAllBusLines() {
         try {
             const response = await axios.get(BASE_URL + "/lines/", {
@@ -49,7 +78,7 @@ class APIService {
     async apiRenameBusLine(id, name) {
         try {
             const response = await axios.patch(BASE_URL + "/lines/" + id, {
-                    "name" : name,
+                "name": name,
                 validateStatus: function (status) {
                     return status <= 400;
                 }
@@ -63,7 +92,7 @@ class APIService {
     async apiCreateBusLine(name) {
         try {
             const response = await axios.post(BASE_URL + "/lines", {
-                    "name" : name,
+                "name": name,
                 validateStatus: function (status) {
                     return status <= 400;
                 }
@@ -116,7 +145,7 @@ class APIService {
     async apiRenameBusStop(id, name) {
         try {
             const response = await axios.patch(BASE_URL + "/busstops/" + id, {
-                    "name" : name,
+                "name": name,
                 validateStatus: function (status) {
                     return status <= 400;
                 }
@@ -130,7 +159,7 @@ class APIService {
     async apiCreateBusStop(name) {
         try {
             const response = await axios.post(BASE_URL + "/busstops", {
-                    "name" : name,
+                "name": name,
                 validateStatus: function (status) {
                     return status <= 400;
                 }
@@ -157,7 +186,7 @@ class APIService {
     async apiSearchTimetables(id, time, timespan) {
         time = time.substring(0, 19).concat("Z");
         try {
-            const response = await axios.get(BASE_URL + "/busstops/" + id +"/timetable?startTime="+time+"&durationSeconds="+(timespan*3600), {
+            const response = await axios.get(BASE_URL + "/busstops/" + id + "/timetable?startTime=" + time + "&durationSeconds=" + (timespan * 3600), {
                 validateStatus: function (status) {
                     return status <= 400;
                 }
@@ -170,7 +199,7 @@ class APIService {
 
     async apiGetBusStopLineSchedules(stop, line) {
         try {
-            const response = await axios.get(BASE_URL + "/busstops/" + stop +"/schedule/"+line, {
+            const response = await axios.get(BASE_URL + "/busstops/" + stop + "/schedule/" + line, {
                 validateStatus: function (status) {
                     return status <= 400;
                 }
@@ -183,7 +212,7 @@ class APIService {
 
     async apiDeleteSchedule(id) {
         try {
-            const response = await axios.delete(BASE_URL + "/schedules/"+id, {
+            const response = await axios.delete(BASE_URL + "/schedules/" + id, {
                 validateStatus: function (status) {
                     return status <= 400;
                 }
@@ -198,8 +227,8 @@ class APIService {
         console.log(time);
         try {
             const response = await axios.patch(BASE_URL + "/schedules/" + id, {
-                    "startTime" : time,
-                    "reverseDirection" : reverseDirection,
+                "startTime": time,
+                "reverseDirection": reverseDirection,
                 validateStatus: function (status) {
                     return status <= 400;
                 }
@@ -213,9 +242,9 @@ class APIService {
     async apiCreateSchedule(line, time, reverseDirection) {
         try {
             const response = await axios.post(BASE_URL + "/schedules", {
-                    "lineId" : line,
-                    "startTime" : time,
-                    "reverseDirection" : reverseDirection,
+                "lineId": line,
+                "startTime": time,
+                "reverseDirection": reverseDirection,
                 validateStatus: function (status) {
                     return status <= 400;
                 }
