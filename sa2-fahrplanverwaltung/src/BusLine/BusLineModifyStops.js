@@ -18,17 +18,17 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
   useEffect(() => apiService().getBusLine(id).then((result) => setBusLineDetail(result)), []);
 
   function deleteBusStopFromLine(stop, line) {
-    apiService().apiDeleteLineStop(stop, line).then(response => {
-      apiService().getBusLine(line).then(((result) => setBusLineDetail(result)), []);
-    })
+    apiService().apiDeleteLineStop(stop, line).then(refresh)
     closeDialog();
   }
 
   function AddBusStopToLine(line, stop, time, target) {
-    apiService().apiAddLineStop(line, stop, time, target).then(response => {
-      apiService().getBusLine(line).then(((result) => setBusLineDetail(result)), []);
-    })
+    apiService().apiAddLineStop(line, stop, time, target).then(refresh)
     closeDialog();
+  }
+
+  function refresh() {
+    apiService().getBusLine(id).then(((result) => setBusLineDetail(result)), []);
   }
 
   function deleteDialog(stop, line) {
@@ -85,8 +85,19 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
           </TableBody>
         </Table>
       </TableContainer>
-      <DeleteBusLineStop open={deleteBusLineDialog} nameStop={editedBusStop} nameLine={editedBusLine} handleClose={() => closeDialog()} confirmDeletion={() => deleteBusStopFromLine(editedBusStop, editedBusLine)}></DeleteBusLineStop>
-      <AddBusLineStop open={addBusLineDialog} nameStop={editedBusStop} nameLine={editedBusLine} handleClose={() => closeDialog()} confirmAddition={() => AddBusStopToLine(editedBusLine, 1, 60, editedBusStop)}></AddBusLineStop>
+      <DeleteBusLineStop
+        open={deleteBusLineDialog}
+        nameStop={editedBusStop}
+        nameLine={editedBusLine}
+        handleClose={() => closeDialog()}
+        confirmDeletion={() => deleteBusStopFromLine(editedBusStop, editedBusLine)}></DeleteBusLineStop>
+      <AddBusLineStop
+        open={addBusLineDialog}
+        close={() => setAddBusLineDialog(false)}
+        onSuccess={refresh}
+        target={editedBusStop}
+        line={editedBusLine}
+        handleClose={() => closeDialog()}></AddBusLineStop>
     </div>
   );
 }

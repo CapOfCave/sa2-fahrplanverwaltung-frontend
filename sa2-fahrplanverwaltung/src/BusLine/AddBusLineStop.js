@@ -9,12 +9,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import apiService from '../api/ApiService';
 import { useState } from 'react';
 
-export default function AddBusLineStop({ open, nameStop, nameLine, handleClose, confirmAddition }) {
+export default function AddBusLineStop({ open, close, onSuccess, target, line, handleClose }) {
 
 
   const [stopID, setStopID] = useState('');
   const [seconds, setSeconds] = useState('');
 
+  function addLineStop() {
+    apiService().apiAddLineStop(line, stopID, seconds, target).then(onSuccess).then(close);
+  }
 
   return (
     <div>
@@ -25,7 +28,7 @@ export default function AddBusLineStop({ open, nameStop, nameLine, handleClose, 
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Tragen sie die Details der hinzuzufügenden Bushaltestelle nach der Bushaltestelle ${nameStop} in der Linie ${nameLine} ein`}
+          {`Tragen sie die Details der hinzuzufügenden Bushaltestelle nach der Bushaltestelle ${target} in der Linie ${line} ein`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -52,7 +55,7 @@ export default function AddBusLineStop({ open, nameStop, nameLine, handleClose, 
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} autoFocus>Abbrechen</Button>
-          <Button onClick={confirmAddition}>
+          <Button onClick={addLineStop}>
             Hinzufügen
           </Button>
         </DialogActions>
