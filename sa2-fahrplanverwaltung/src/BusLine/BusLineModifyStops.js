@@ -78,7 +78,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
                   <TableCell>{stop.busStopName}</TableCell>
                   <TableCell>{stop.secondsToNextStop / 60}</TableCell>
                   <TableCell><Button variant="outlined" onClick={(event) => deleteDialog(stop.id, id)} >Haltestelle Löschen</Button></TableCell>
-                  <TableCell><Button variant="outlined" onClick={(event) => addDialog(index, id)} >Haltestelle Hier ↓ Hinzufügen</Button></TableCell>
+                  <TableCell><Button variant="outlined" onClick={(event) => addDialogCall(index, id)} >Haltestelle Hier ↓ Hinzufügen</Button></TableCell>
                 </TableRow>
               ))
             }
