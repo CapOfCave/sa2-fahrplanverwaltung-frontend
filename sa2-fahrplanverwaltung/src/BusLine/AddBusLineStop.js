@@ -7,16 +7,20 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import apiService from '../api/ApiService';
+import Autocomplete from '@mui/material/Autocomplete'
 import { useState } from 'react';
 
-export default function AddBusLineStop({ open, close, onSuccess, target, line, handleClose }) {
+export default function AddBusLineStop({ open, onSuccess, target, line, handleClose, allBusStops }) {
 
 
-  const [stopID, setStopID] = useState('');
-  const [seconds, setSeconds] = useState('');
+  const [selectedBusStop, setSelectedBusStop] = useState('');
+  const [minutes, setMinutes] = useState(null);
 
   function addLineStop() {
-    apiService().apiAddLineStop(line, stopID, seconds, target).then(onSuccess).then(close);
+    apiService()
+      .apiAddLineStop(line, selectedBusStop.id, minutes && minutes * 60, target)
+      .then(onSuccess)
+      .then(handleClose);
   }
 
   return (
@@ -25,36 +29,31 @@ export default function AddBusLineStop({ open, close, onSuccess, target, line, h
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Tragen sie die Details der hinzuzufügenden Bushaltestelle nach der Bushaltestelle ${target} in der Linie ${line} ein`}
+          Bushaltestelle zu Linie {line} hinzufügen
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="stopID"
-            label="Einzufügende BusStopID"
-            type="text"
+
+          <Autocomplete
+            options={allBusStops.map(busStop => ({ ...busStop, label: busStop.name }))}
             fullWidth
-            variant="standard"
-            onChange={(event) => { setStopID(event.target.value) }}
+            sx={{ mt: 2 }}
+            renderInput={(params) => <TextField {...params} label="Bushaltestelle" />}
+            onChange={(_event, newInputValue) => setSelectedBusStop(newInputValue)}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
           />
           <TextField
-            margin="dense"
-            id="seconds"
-            label="Sekunden bis zum nächsten Stop"
-            type="text"
+            label="Minuten bis zum nächsten Stop"
+            type="number"
             fullWidth
-            variant="standard"
-            onChange={(event) => { setSeconds(event.target.value) }}
+            sx={{ mt: 2 }}
+            variant="outlined"
+            onChange={(event) => { setMinutes(event.target.value) }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus>Abbrechen</Button>
+          <Button onClick={handleClose}>Abbrechen</Button>
           <Button onClick={addLineStop}>
             Hinzufügen
           </Button>

@@ -17,6 +17,10 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
   const [busLineDetail, setBusLineDetail] = useState(null);
   useEffect(() => apiService().getBusLine(id).then((result) => setBusLineDetail(result)), []);
 
+  const [allBusStops, setAllBusStops] = useState([]);
+  useEffect(() => apiService().apiGetAllBusStops().then(result => setAllBusStops(result)), []);
+
+
   function deleteBusStopFromLine(stop, line) {
     apiService().apiDeleteLineStop(stop, line).then(refresh)
     closeDialog();
@@ -92,6 +96,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
         confirmDeletion={() => deleteBusStopFromLine(editedBusStop, editedBusLine)}></DeleteBusLineStop>
       <AddBusLineStop
         open={addBusLineDialog}
+        allBusStops={allBusStops}
         close={() => setAddBusLineDialog(false)}
         onSuccess={refresh}
         target={editedBusStop}
