@@ -9,7 +9,7 @@ export default function BusLineDetail({ isStaff, setIsStaff }) {
 
   let { id } = useParams();
   const [busLineDetail, setBusLineDetail] = useState(null);
-  useEffect(() => apiService().getBusLine(id).then((result) => setBusLineDetail(result)), []);
+  useEffect(() => apiService().getBusLine(id).then((result) => setBusLineDetail(result)), [id]);
 
   return (
     <div>

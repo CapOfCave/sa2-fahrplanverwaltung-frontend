@@ -27,7 +27,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
   useEffect(() => apiService().getBusLine(id).then((result) => {
     setLineStops(result.lineStops);
     setName(result.name)
-  }), []);
+  }), [id]);
 
   const [allBusStops, setAllBusStops] = useState([]);
   useEffect(() => apiService().apiGetAllBusStops().then(result => setAllBusStops(result)), []);

@@ -9,7 +9,7 @@ export default function BusStopDetail({ isStaff, setIsStaff }) {
   let { id } = useParams();
 
   const [busStopDetail, setBusStopDetail] = useState(null);
-  useEffect(() => apiService().getBusStop(id).then((result) => setBusStopDetail(result)), []);
+  useEffect(() => apiService().getBusStop(id).then((result) => setBusStopDetail(result)), [id]);
 
   let navigate = useNavigate();
   function showStopLineSchedule(stop, line){
