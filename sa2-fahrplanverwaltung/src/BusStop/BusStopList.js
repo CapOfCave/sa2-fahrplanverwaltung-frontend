@@ -124,7 +124,7 @@ export default function BusStopList({ isStaff, setIsStaff }) {
             <TableBody>
               {
                 busStops.map((stop) => (
-                  <TableRow key={stop.name} className='tablerow' hover onClick={(event) => showDetails(stop.id)}>
+                  <TableRow key={stop.name} className='tablerow' hover onClick={(event) => showDetails(stop.id)} sx={{cursor: "pointer"}}>
                     <TableCell>{stop.id}</TableCell>
                     <TableCell>{stop.name}</TableCell>
                     {isStaff &&

@@ -119,7 +119,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
             </TableHead>
             <TableBody>
               {busLines.map((line) => (
-                <TableRow key={line.name} className='tablerow' hover onClick={() => showDetails(line.id)} >
+                <TableRow key={line.name} className='tablerow' hover onClick={() => showDetails(line.id)} sx={{cursor: "pointer"}} >
                   <TableCell>{line.id}</TableCell>
                   <TableCell >{line.name}</TableCell>
                   {isStaff &&

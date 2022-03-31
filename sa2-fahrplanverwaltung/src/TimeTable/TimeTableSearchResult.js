@@ -12,7 +12,6 @@ export default function TimeTableSearchResult({stop, time, timespan}){
         setScheduleEntries(result?.scheduleEntries))}}, [stop, time, timespan]);
 
     const columns = [
-        { id: 'id', label: 'ID', minWidth: 20 },
         { id: 'line', label: 'Buslinie', minWidth: 170 },
         { id: 'arrivalTime', label: 'Ankunftszeit', minWidth: 170 }, 
         { id: 'lastStop', label: 'Endhaltestelle', minWidth: 170 },  
@@ -43,9 +42,13 @@ export default function TimeTableSearchResult({stop, time, timespan}){
           <TableBody>
             {
               scheduleEntries?.map((scheduleEntries) => (
-                <TableRow key={[scheduleEntries?.schedule.id, scheduleEntries?.arrival]} className='tablerow'>
-                  <TableCell>{scheduleEntries?.schedule.id}</TableCell>
-                  <TableCell onClick={(event) => showBusLineDetails(scheduleEntries?.schedule?.line?.id)}>{scheduleEntries?.schedule.line.name}</TableCell>
+                <TableRow 
+                key={[scheduleEntries?.schedule.id, scheduleEntries?.arrival]} 
+                className='tablerow' 
+                hover 
+                onClick={(event) => showBusLineDetails(scheduleEntries?.schedule?.line?.id)} 
+                sx={{cursor: "pointer"}}>
+                  <TableCell>{scheduleEntries?.schedule.line.name}</TableCell>
                   <TableCell>{moment(scheduleEntries?.arrival).format("DD.MM.YYYY HH:mm")}</TableCell>
                   <TableCell>{scheduleEntries?.schedule.finalStop.name}</TableCell>
                 </TableRow>
