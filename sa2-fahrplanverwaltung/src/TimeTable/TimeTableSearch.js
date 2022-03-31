@@ -1,4 +1,4 @@
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import { Autocomplete, Button, Divider, Paper, TextField } from "@mui/material";
@@ -10,7 +10,7 @@ import moment from 'moment';
 
 export default function TimeTableSearch({ isStaff, setIsStaff }) {
     const [stop, setStop] = useState(undefined);
-    const [dateValue, setDateValue] = useState(Date());
+    const [dateValue, setDateValue] = useState(moment());
     const [stops, setStops] = useState([]);
     const [showResult, setShowResult] = useState(false);
     const [timespan, setTimespan] = useState(0);
@@ -48,7 +48,7 @@ export default function TimeTableSearch({ isStaff, setIsStaff }) {
                     sx={{ width: 300, marginBottom: 3 }}
                     renderInput={(params) => <TextField {...params} label="Haltestelle" />}
                 />
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DateTimePicker
                         label="Startzeit"
                         value={dateValue}
