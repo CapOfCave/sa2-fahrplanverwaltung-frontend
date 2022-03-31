@@ -10,7 +10,7 @@ import Autocomplete from '@mui/material/Autocomplete'
 import { useState } from 'react';
 import { useSnackbar } from 'notistack';
 
-export default function AddBusLineStop({ open, onSuccess, target, line, handleClose, allBusStops }) {
+export default function AddBusLineStop({ open, onSuccess, lineId, targetIndex, handleClose, allBusStops }) {
 
 
   const [selectedBusStop, setSelectedBusStop] = useState('');
@@ -19,10 +19,10 @@ export default function AddBusLineStop({ open, onSuccess, target, line, handleCl
 
   function addLineStop() {
     apiService()
-      .apiAddLineStop(line, selectedBusStop.id, minutes && minutes * 60, target)
+      .apiAddLineStop(lineId, selectedBusStop.id, minutes && minutes * 60, targetIndex)
       .then(onSuccess)
       .then(handleClose)
-      .catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
+      .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
   }
 
   return (
@@ -33,7 +33,7 @@ export default function AddBusLineStop({ open, onSuccess, target, line, handleCl
         aria-labelledby="alert-dialog-title"
       >
         <DialogTitle id="alert-dialog-title">
-          Bushaltestelle zu Linie {line} hinzufügen
+          Bushaltestelle hinzufügen
         </DialogTitle>
         <DialogContent>
 

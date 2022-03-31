@@ -8,24 +8,32 @@ export default function apiService() {
 
 class APIService {
     async apiDeleteLineStop(stopid, lineid) {
-            const response = await axios.delete(BASE_URL + "/lines/" + lineid + "/busstops/" + stopid, {
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+        const response = await axios.delete(BASE_URL + "/lines/" + lineid + "/busstops/" + stopid, {
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
     }
 
-    async apiAddLineStop(line, stop, time, target) {
-            const response = await axios.post(BASE_URL + "/lines/" + line + "/busstops", {
-                "busStopId": stop,
-                "secondsToNextStop": time,
-                "targetIndex": target,
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+    async apiAddLineStop(lineId, busStopId, secondsToNextStop, targetIndex) {
+        const response = await axios.post(BASE_URL + "/lines/" + lineId + "/busstops", {
+            busStopId: busStopId,
+            secondsToNextStop: secondsToNextStop,
+            targetIndex: targetIndex,
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
+    }
+
+    async apiPatchLineStop(stopid, lineid, secondsToNextStop, targetIndex) {
+        const response = await axios.patch(BASE_URL + "/lines/" + lineid + "/busstops/" + stopid, {
+            secondsToNextStop: secondsToNextStop,
+            targetIndex: targetIndex
+        });
+        return response.data;
     }
 
     async apiGetAllBusLines() {
@@ -55,32 +63,32 @@ class APIService {
     }
 
     async apiDeleteBusLine(id) {
-            const response = await axios.delete(BASE_URL + "/lines/" + id, {
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+        const response = await axios.delete(BASE_URL + "/lines/" + id, {
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
     }
 
     async apiRenameBusLine(id, name) {
-            const response = await axios.patch(BASE_URL + "/lines/" + id, {
-                "name": name,
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+        const response = await axios.patch(BASE_URL + "/lines/" + id, {
+            "name": name,
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
     }
 
     async apiCreateBusLine(name) {
-            const response = await axios.post(BASE_URL + "/lines", {
-                "name": name,
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+        const response = await axios.post(BASE_URL + "/lines", {
+            "name": name,
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
     }
 
     async apiGetAllBusStops() {
@@ -110,32 +118,32 @@ class APIService {
     }
 
     async apiDeleteBusStop(id) {
-            const response = await axios.delete(BASE_URL + "/busstops/" + id, {
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+        const response = await axios.delete(BASE_URL + "/busstops/" + id, {
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
     }
 
     async apiRenameBusStop(id, name) {
-            const response = await axios.patch(BASE_URL + "/busstops/" + id, {
-                "name": name,
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+        const response = await axios.patch(BASE_URL + "/busstops/" + id, {
+            "name": name,
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
     }
 
     async apiCreateBusStop(name) {
-            const response = await axios.post(BASE_URL + "/busstops", {
-                "name": name,
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+        const response = await axios.post(BASE_URL + "/busstops", {
+            "name": name,
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
     }
 
     async apiGetAllSchedules() {
@@ -179,34 +187,34 @@ class APIService {
     }
 
     async apiDeleteSchedule(id) {
-            const response = await axios.delete(BASE_URL + "/schedules/" + id, {
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+        const response = await axios.delete(BASE_URL + "/schedules/" + id, {
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
     }
 
     async apiUpdateSchedule(id, time, reverseDirection) {
-            const response = await axios.patch(BASE_URL + "/schedules/" + id, {
-                "startTime": time,
-                "reverseDirection": reverseDirection,
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+        const response = await axios.patch(BASE_URL + "/schedules/" + id, {
+            "startTime": time,
+            "reverseDirection": reverseDirection,
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
     }
 
     async apiCreateSchedule(line, time, reverseDirection) {
-            const response = await axios.post(BASE_URL + "/schedules", {
-                "lineId": line,
-                "startTime": time,
-                "reverseDirection": reverseDirection,
-                validateStatus: function (status) {
-                    return status <= 400;
-                }
-            });
-            return response.data;
+        const response = await axios.post(BASE_URL + "/schedules", {
+            "lineId": line,
+            "startTime": time,
+            "reverseDirection": reverseDirection,
+            validateStatus: function (status) {
+                return status <= 400;
+            }
+        });
+        return response.data;
     }
 }
