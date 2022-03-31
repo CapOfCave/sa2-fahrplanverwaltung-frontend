@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import apiService from '../api/ApiService';
+import { apiAddLineStop } from '../api/ApiService';
 import Autocomplete from '@mui/material/Autocomplete'
 import { useState } from 'react';
 import { useSnackbar } from 'notistack';
@@ -18,8 +18,7 @@ export default function AddBusLineStop({ open, onSuccess, lineId, targetIndex, h
   const { enqueueSnackbar } = useSnackbar();
 
   function addLineStop() {
-    apiService()
-      .apiAddLineStop(lineId, selectedBusStop.id, minutes && minutes * 60, targetIndex)
+    apiAddLineStop(lineId, selectedBusStop.id, minutes && minutes * 60, targetIndex)
       .then(onSuccess)
       .then(handleClose)
       .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));

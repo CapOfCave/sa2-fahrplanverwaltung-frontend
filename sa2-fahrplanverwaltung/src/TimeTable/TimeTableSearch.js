@@ -1,13 +1,13 @@
 import AdapterMoment from '@mui/lab/AdapterMoment';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { Autocomplete, Button, Divider, Paper, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
-import Header from "../layout/Header";
-import apiService from '../api/ApiService';
-import TimeTableSearchResult from './TimeTableSearchResult';
 import moment from 'moment';
 import 'moment/locale/de';
+import { useEffect, useState } from "react";
+import { apiGetAllBusStops } from '../api/ApiService';
+import Header from "../layout/Header";
+import TimeTableSearchResult from './TimeTableSearchResult';
 
 export default function TimeTableSearch({ isStaff, setIsStaff }) {
     const [stop, setStop] = useState(undefined);
@@ -16,7 +16,7 @@ export default function TimeTableSearch({ isStaff, setIsStaff }) {
     const [showResult, setShowResult] = useState(false);
     const [timespan, setTimespan] = useState(0);
 
-    useEffect(() => apiService().apiGetAllBusStops().then((result) => setStops(result)), []);
+    useEffect(() => apiGetAllBusStops().then((result) => setStops(result)), []);
 
 
     const handleDateChange = (newValue) => {

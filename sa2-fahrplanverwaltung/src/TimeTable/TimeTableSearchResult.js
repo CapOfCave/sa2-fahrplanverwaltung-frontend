@@ -2,13 +2,13 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
 import moment from "moment";
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import apiService from "../api/ApiService";
+import { apiSearchTimetables } from "../api/ApiService";
 
 export default function TimeTableSearchResult({stop, time, timespan}){
 
     const [scheduleEntries, setScheduleEntries] = useState([]);
 
-    useEffect(() => {if(stop){apiService().apiSearchTimetables(stop?.id, time, timespan).then((result) => 
+    useEffect(() => {if(stop){apiSearchTimetables(stop?.id, time, timespan).then((result) => 
         setScheduleEntries(result?.scheduleEntries))}}, [stop, time, timespan]);
 
     const columns = [

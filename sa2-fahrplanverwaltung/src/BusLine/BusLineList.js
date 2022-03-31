@@ -1,5 +1,4 @@
-import apiService from "../api/ApiService";
-import { useState, useEffect } from 'react';
+import { Button, Divider } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,12 +6,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import CreateBusLine from "./CreateBusLine";
-import { Button, Divider } from "@mui/material";
-import Header from "../layout/Header";
-import DeleteBusLine from "./DeleteBusLine";
-import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { apiCreateBusLine, apiDeleteBusLine, apiGetAllBusLines, apiRenameBusLine } from "../api/ApiService";
+import Header from "../layout/Header";
+import CreateBusLine from "./CreateBusLine";
+import DeleteBusLine from "./DeleteBusLine";
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 5 },
@@ -33,7 +33,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
   }
 
   const [busLines, setBusLines] = useState([]);
-  useEffect(() => apiService().apiGetAllBusLines().then((result) => setBusLines(result)), []);
+  useEffect(() => apiGetAllBusLines().then((result) => setBusLines(result)), []);
 
   const [editedBusLine, setEditedBusLine] = useState(undefined);
   const [showDialog, setShowDialog] = useState(false);
@@ -51,24 +51,28 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
   }
 
   function renameLine(name) {
-    apiService().apiRenameBusLine(editedBusLine.id, name).then(response => {
-      apiService().apiGetAllBusLines().then(((result) => setBusLines(result)), []);
-    }).catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
+    apiRenameBusLine(editedBusLine.id, name)
+      .then(refresh)
+      .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
   }
 
   function createLine(name) {
-    apiService().apiCreateBusLine(name).then(response => {
-      apiService().apiGetAllBusLines().then(((result) => setBusLines(result)), []);
-    }).catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
+    apiCreateBusLine(name)
+      .then(refresh)
+      .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
   }
 
   function confirmDeletion() {
-    apiService().apiDeleteBusLine(editedBusLine.id).then(response => {
-      apiService().apiGetAllBusLines().then(((result) => setBusLines(result)), []);
-    }).catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
+    apiDeleteBusLine(editedBusLine.id)
+      .then(refresh)
+      .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
+  }
+
+  function refresh() {
+    apiGetAllBusLines().then(((result) => setBusLines(result)), []);
   }
 
   function editBusLine(line) {
@@ -119,7 +123,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
             </TableHead>
             <TableBody>
               {busLines.map((line) => (
-                <TableRow key={line.name} className='tablerow' hover onClick={() => showDetails(line.id)} sx={{cursor: "pointer"}} >
+                <TableRow key={line.name} className='tablerow' hover onClick={() => showDetails(line.id)} sx={{ cursor: "pointer" }} >
                   <TableCell>{line.id}</TableCell>
                   <TableCell >{line.name}</TableCell>
                   {isStaff &&
@@ -132,7 +136,7 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
                     <TableCell><Button onClick={(event) => { event.stopPropagation(); deleteBusLine(line) }}>Löschen</Button></TableCell>
                   }
                 </TableRow>
-                ))
+              ))
               }
             </TableBody>
           </Table>

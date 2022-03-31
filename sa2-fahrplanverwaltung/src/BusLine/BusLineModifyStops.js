@@ -6,7 +6,7 @@ import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { Navigate, useParams } from "react-router-dom";
-import apiService from "../api/ApiService";
+import apiService, { apiDeleteLineStop, apiGetAllBusStops, apiPatchLineStop, getBusLine } from "../api/ApiService";
 import Header from "../layout/Header";
 import AddBusLineStop from "./AddBusLineStop";
 import DeleteBusLineStop from "./DeleteBusLineStop";
@@ -24,23 +24,23 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
 
   const [targetIndex, setTargetIndex] = useState(0);
 
-  useEffect(() => apiService().getBusLine(id).then((result) => {
+  useEffect(() => getBusLine(id).then((result) => {
     setLineStops(result.lineStops);
     setName(result.name)
   }), [id]);
 
   const [allBusStops, setAllBusStops] = useState([]);
-  useEffect(() => apiService().apiGetAllBusStops().then(result => setAllBusStops(result)), []);
+  useEffect(() => apiGetAllBusStops().then(result => setAllBusStops(result)), []);
 
   function removeBusStopFromLine(busStopId) {
-    apiService().apiDeleteLineStop(busStopId, id)
+    apiDeleteLineStop(busStopId, id)
       .then(refresh)
       .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
   }
 
   function refresh() {
-    apiService().getBusLine(id).then(((result) => {
+    getBusLine(id).then(((result) => {
       setLineStops(result.lineStops);
       setName(result.name)
     }), []);
@@ -77,7 +77,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
     // dropped outside the list
     if (!result.destination) return
     setLineStops(reorder(lineStops, result.source.index, result.destination.index))
-    apiService().apiPatchLineStop(result.draggableId, id, undefined, result.destination.index)
+    apiPatchLineStop(result.draggableId, id, undefined, result.destination.index)
 
   }
 
@@ -94,7 +94,7 @@ export default function BusLineModifyStops({ isStaff, setIsStaff }) {
     const secondsToNextStop = event.target.value * 60
     const newLineStop = { ...lineStopToEdit, secondsToNextStop };
     setLineStops(lineStops => lineStops.map(lineStop => lineStop.id === lineStopToEdit.id ? newLineStop : lineStop));
-    apiService().apiPatchLineStop(lineStopToEdit.id, id, secondsToNextStop, undefined)
+    apiPatchLineStop(lineStopToEdit.id, id, secondsToNextStop, undefined)
   }
 
 

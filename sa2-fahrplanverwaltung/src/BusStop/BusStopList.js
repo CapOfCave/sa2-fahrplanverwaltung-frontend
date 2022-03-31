@@ -1,5 +1,4 @@
-import apiService from "../api/ApiService";
-import { useState, useEffect } from 'react';
+import { Button, Divider } from "@mui/material";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,12 +6,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import CreateBusStop from "./CreateBusStop";
-import { Button, Divider } from "@mui/material";
-import Header from "../layout/Header";
-import DeleteBusStop from "./DeleteBusStop";
-import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { apiCreateBusStop, apiDeleteBusStop, apiGetAllBusStops, apiRenameBusStop } from "../api/ApiService";
+import Header from "../layout/Header";
+import CreateBusStop from "./CreateBusStop";
+import DeleteBusStop from "./DeleteBusStop";
 
 const columns = [
   { id: 'id', label: 'ID', minWidth: 5 },
@@ -32,7 +32,7 @@ export default function BusStopList({ isStaff, setIsStaff }) {
   }
 
   const [busStops, setBusStops] = useState([]);
-  useEffect(() => apiService().apiGetAllBusStops().then((result) => setBusStops(result)), []);
+  useEffect(() => apiGetAllBusStops().then((result) => setBusStops(result)), []);
 
 
   /*var busStops = [
@@ -59,24 +59,27 @@ export default function BusStopList({ isStaff, setIsStaff }) {
   }
 
   function renameStop(name) {
-    apiService().apiRenameBusStop(editedBusStop.id, name).then(response => {
-      apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
-    }).catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
+    apiRenameBusStop(editedBusStop.id, name)
+      .then(refresh)
+      .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
   }
 
   function createStop(name) {
-    apiService().apiCreateBusStop(name).then(response => {
-      apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
-    }).catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
+    apiCreateBusStop(name)
+      .then(refresh)
+      .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
   }
 
   function confirmDeletion() {
-    apiService().apiDeleteBusStop(editedBusStop.id).then(response => {
-      apiService().apiGetAllBusStops().then(((result) => setBusStops(result)), []);
-    }).catch(error => enqueueSnackbar(error.response.data, {variant: "error"}));
+    apiDeleteBusStop(editedBusStop.id).then(refresh)
+      .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }));
     closeDialog();
+  }
+
+  function refresh() {
+    apiGetAllBusStops().then(result => setBusStops(result));
   }
 
   function editBusStop(stop) {
@@ -97,10 +100,10 @@ export default function BusStopList({ isStaff, setIsStaff }) {
   return (
     <div>
       <Header isStaff={isStaff} setIsStaff={setIsStaff} />
-      <Divider sx={{ width: '90%', marginLeft: "5%"}}>
-      <h1>Bushaltestellen</h1>
-      {isStaff &&
-          <Button variant="outlined" onClick={newBusStop} sx={{ marginBottom: 4}}>
+      <Divider sx={{ width: '90%', marginLeft: "5%" }}>
+        <h1>Bushaltestellen</h1>
+        {isStaff &&
+          <Button variant="outlined" onClick={newBusStop} sx={{ marginBottom: 4 }}>
             Neue Haltestelle anlegen
           </Button>
         }
@@ -124,14 +127,14 @@ export default function BusStopList({ isStaff, setIsStaff }) {
             <TableBody>
               {
                 busStops.map((stop) => (
-                  <TableRow key={stop.name} className='tablerow' hover onClick={(event) => showDetails(stop.id)} sx={{cursor: "pointer"}}>
+                  <TableRow key={stop.name} className='tablerow' hover onClick={(event) => showDetails(stop.id)} sx={{ cursor: "pointer" }}>
                     <TableCell>{stop.id}</TableCell>
                     <TableCell>{stop.name}</TableCell>
                     {isStaff &&
-                      <TableCell><Button variant="outlined" onClick={(event) => {event.stopPropagation(); editBusStop(stop)}} >Bearbeiten</Button></TableCell>
+                      <TableCell><Button variant="outlined" onClick={(event) => { event.stopPropagation(); editBusStop(stop) }} >Bearbeiten</Button></TableCell>
                     }
                     {isStaff &&
-                      <TableCell><Button onClick={(event) => {event.stopPropagation(); deleteBusStop(stop)}}>Löschen</Button></TableCell>
+                      <TableCell><Button onClick={(event) => { event.stopPropagation(); deleteBusStop(stop) }}>Löschen</Button></TableCell>
                     }
                   </TableRow>
                 ))

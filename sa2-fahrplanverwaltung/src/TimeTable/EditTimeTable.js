@@ -1,6 +1,5 @@
 import { TimePicker } from '@mui/lab';
 import AdapterMoment from '@mui/lab/AdapterMoment';
-import 'moment/locale/de';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -9,11 +8,12 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
+import moment from "moment";
+import 'moment/locale/de';
+import { useSnackbar } from 'notistack';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import apiService from '../api/ApiService';
-import moment from "moment";
-import { useSnackbar } from 'notistack';
+import { apiUpdateSchedule, getBusLine } from '../api/ApiService';
 
 export default function EditTimeTable({ open, handleClose, onSuccess, schedule }) {
 
@@ -29,7 +29,7 @@ export default function EditTimeTable({ open, handleClose, onSuccess, schedule }
       setFinalStopOptions([])
       return;
     }
-    apiService().getBusLine(schedule.line.id)
+    getBusLine(schedule.line.id)
       .then(lineDetail => lineDetail.lineStops)
       .then(lineStops => {
         const newFinalStops = [
@@ -70,7 +70,7 @@ export default function EditTimeTable({ open, handleClose, onSuccess, schedule }
 
 
   const saveSchedule = () => {   
-    apiService().apiUpdateSchedule(schedule.id, time.format("HH:mm"), selectedFinalStop.reverseDirection)
+    apiUpdateSchedule(schedule.id, time.format("HH:mm"), selectedFinalStop.reverseDirection)
     .catch(error => enqueueSnackbar(error.response.data, {variant: "error"}))
       .then(response => {
         onSuccess();

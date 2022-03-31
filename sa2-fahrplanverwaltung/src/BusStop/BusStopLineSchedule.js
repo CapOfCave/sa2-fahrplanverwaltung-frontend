@@ -1,7 +1,7 @@
-import apiService from "../api/ApiService";
-import { useState, useEffect } from 'react';
 import { Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
+import { apiGetBusStopLineSchedules } from "../api/ApiService";
 import Header from "../layout/Header";
 
 export default function BusStopLineSchedule({ isStaff, setIsStaff }) {
@@ -10,7 +10,7 @@ export default function BusStopLineSchedule({ isStaff, setIsStaff }) {
 
     const [result, setResult] = useState([]);
     const [scheduleEntries, setScheduleEntries] = useState([]);
-    useEffect(() => apiService().apiGetBusStopLineSchedules(stop, line).then((result) => 
+    useEffect(() => apiGetBusStopLineSchedules(stop, line).then((result) => 
     {
         setResult(result);
         setScheduleEntries(result?.scheduleEntries);

@@ -1,7 +1,7 @@
 import { Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import apiService from "../api/ApiService";
+import { getBusStop } from "../api/ApiService";
 import Header from "../layout/Header";
 
 export default function BusStopDetail({ isStaff, setIsStaff }) {
@@ -9,7 +9,7 @@ export default function BusStopDetail({ isStaff, setIsStaff }) {
   let { id } = useParams();
 
   const [busStopDetail, setBusStopDetail] = useState(null);
-  useEffect(() => apiService().getBusStop(id).then((result) => setBusStopDetail(result)), [id]);
+  useEffect(() => getBusStop(id).then((result) => setBusStopDetail(result)), [id]);
 
   let navigate = useNavigate();
   function showStopLineSchedule(stop, line){

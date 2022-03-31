@@ -2,14 +2,14 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import { Button, Container, Divider, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import apiService from "../api/ApiService";
+import apiService, { getBusLine } from "../api/ApiService";
 import Header from "../layout/Header";
 
 export default function BusLineDetail({ isStaff, setIsStaff }) {
 
   let { id } = useParams();
   const [busLineDetail, setBusLineDetail] = useState(null);
-  useEffect(() => apiService().getBusLine(id).then((result) => setBusLineDetail(result)), [id]);
+  useEffect(() => getBusLine(id).then((result) => setBusLineDetail(result)), [id]);
 
   return (
     <div>

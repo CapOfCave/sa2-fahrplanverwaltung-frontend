@@ -11,14 +11,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import apiService from '../api/ApiService';
+import apiService, { apiCreateSchedule, apiGetAllBusLines, getBusLine } from '../api/ApiService';
 import moment from "moment";
 import { useSnackbar } from 'notistack';
 
 export default function CreateTimeTable({ open, handleClose, onSuccess }) {
 
   const [lines, setLines] = useState([]);
-  useEffect(() => apiService().apiGetAllBusLines().then((result) => setLines(result)), []);
+  useEffect(() => apiGetAllBusLines().then((result) => setLines(result)), []);
   const [finalStopOptions, setFinalStopOptions] = useState([]);
 
   // form elements
@@ -33,7 +33,7 @@ export default function CreateTimeTable({ open, handleClose, onSuccess }) {
       setFinalStopOptions([])
       return;
     }
-    apiService().getBusLine(selectedLine.id)
+    getBusLine(selectedLine.id)
       .then(lineDetail => lineDetail.lineStops)
       .then(lineStops => {
         const newFinalStops = [
@@ -72,9 +72,9 @@ export default function CreateTimeTable({ open, handleClose, onSuccess }) {
   }
 
   const saveSchedule = () => {
-    apiService().apiCreateSchedule(selectedLine.id, moment(new Date(time).toISOString()).format("HH:mm"), selectedFinalStop.reverseDirection)
-    .catch(error => enqueueSnackbar(error.response.data, {variant: "error"}))  
-    .then(response => {
+    apiCreateSchedule(selectedLine.id, moment(new Date(time).toISOString()).format("HH:mm"), selectedFinalStop.reverseDirection)
+      .catch(error => enqueueSnackbar(error.response.data, { variant: "error" }))
+      .then(response => {
         onSuccess();
         handleClose();
       });
