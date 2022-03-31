@@ -7,6 +7,7 @@ import Header from "../layout/Header";
 import apiService from '../api/ApiService';
 import TimeTableSearchResult from './TimeTableSearchResult';
 import moment from 'moment';
+import 'moment/locale/de';
 
 export default function TimeTableSearch({ isStaff, setIsStaff }) {
     const [stop, setStop] = useState(undefined);
@@ -48,9 +49,10 @@ export default function TimeTableSearch({ isStaff, setIsStaff }) {
                     sx={{ width: 300, marginBottom: 3 }}
                     renderInput={(params) => <TextField {...params} label="Haltestelle" />}
                 />
-                <LocalizationProvider dateAdapter={AdapterMoment}>
+                <LocalizationProvider dateAdapter={AdapterMoment} locale="de">
                     <DateTimePicker
                         label="Startzeit"
+                        mask="__.__.____ __:__"
                         value={dateValue}
                         onChange={handleDateChange}
                         renderInput={(params) => <TextField {...params} />}
