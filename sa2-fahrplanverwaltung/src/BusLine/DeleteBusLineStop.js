@@ -17,17 +17,17 @@ export default function deleteBusLineStop({ open, nameStop, nameLine, handleClos
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Wollen Sie die Bushaltestelle ${nameStop} in der Buslinie ${nameLine} wirklich löschen?`}
+          {`Wollen Sie die Bushaltestelle ${nameStop} wirklich aus der Buslinie ${nameLine} entfernen?`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Gelöschte Haltestellen können nicht wiederhergestellt werden.
+            Das Entfernen kann nicht rückgängig gemacht werden.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} autoFocus>Abbrechen</Button>
           <Button onClick={confirmDeletion}>
-            Löschen
+            Entfernen
           </Button>
         </DialogActions>
       </Dialog>
