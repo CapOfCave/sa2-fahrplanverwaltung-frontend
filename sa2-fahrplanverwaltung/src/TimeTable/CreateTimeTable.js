@@ -1,5 +1,5 @@
 import { TimePicker } from '@mui/lab';
-import AdapterMoment from '@mui/lab/AdapterDateFns';
+import AdapterMoment from '@mui/lab/AdapterMoment';
 import 'moment/locale/de';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { Autocomplete } from '@mui/material';
