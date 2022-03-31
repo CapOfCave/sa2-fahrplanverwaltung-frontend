@@ -1,8 +1,8 @@
-import apiService from "../api/ApiService";
-import { useState, useEffect } from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import moment from "moment";
+import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import apiService from "../api/ApiService";
 
 export default function TimeTableSearchResult({stop, time, timespan}){
 

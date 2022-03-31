@@ -1,6 +1,6 @@
 import { TimePicker } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import deLocale from 'date-fns/locale/de';
+import AdapterMoment from '@mui/lab/AdapterMoment';
+import 'moment/locale/de';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { Autocomplete } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -94,7 +94,7 @@ export default function EditTimeTable({ open, handleClose, onSuccess, schedule }
           sx={{ mb: 2, mt: 1 }}
           fullWidth
         />
-        <LocalizationProvider dateAdapter={AdapterDateFns} locale={deLocale}>
+        <LocalizationProvider dateAdapter={AdapterMoment} locale={"de"}>
           <TimePicker
             label="Startzeit"
             value={time}

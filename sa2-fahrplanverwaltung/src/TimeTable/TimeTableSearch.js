@@ -42,7 +42,6 @@ export default function TimeTableSearch({ isStaff, setIsStaff }) {
                 <Autocomplete
                     disablePortal
                     disableClearable
-                    id="combo-box-stops"
                     options={stops}
                     getOptionLabel={(option) => (option ? option.name : "")}
                     onChange={handleStopChange}
