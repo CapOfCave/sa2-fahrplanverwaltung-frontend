@@ -118,21 +118,20 @@ export default function BusLineOverview({ isStaff, setIsStaff }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {
-                busLines.map((line) => (
-                  <TableRow key={line.name} className='tablerow' >
-                    <TableCell>{line.id}</TableCell>
-                    <TableCell onClick={(event) => showDetails(line.id)}>{line.name}</TableCell>
-                    {isStaff &&
-                      <TableCell><Button variant="outlined" onClick={(event) => modifyStops(line.id)} >Bearbeiten</Button></TableCell>
-                    }
-                    {isStaff &&
-                      <TableCell><Button variant="outlined" onClick={(event) => editBusLine(line)} >Umbenennen</Button></TableCell>
-                    }
-                    {isStaff &&
-                      <TableCell><Button variant="outlined" onClick={(event) => deleteBusLine(line)}>Löschen</Button></TableCell>
-                    }
-                  </TableRow>
+              {busLines.map((line) => (
+                <TableRow key={line.name} className='tablerow' hover onClick={() => showDetails(line.id)} >
+                  <TableCell>{line.id}</TableCell>
+                  <TableCell >{line.name}</TableCell>
+                  {isStaff &&
+                    <TableCell><Button variant="outlined" onClick={(event) => { event.stopPropagation(); modifyStops(line.id) }} >Bearbeiten</Button></TableCell>
+                  }
+                  {isStaff &&
+                    <TableCell><Button variant="outlined" onClick={(event) => { event.stopPropagation(); editBusLine(line) }} >Umbenennen</Button></TableCell>
+                  }
+                  {isStaff &&
+                    <TableCell><Button onClick={(event) => { event.stopPropagation(); deleteBusLine(line) }}>Löschen</Button></TableCell>
+                  }
+                </TableRow>
                 ))
               }
             </TableBody>

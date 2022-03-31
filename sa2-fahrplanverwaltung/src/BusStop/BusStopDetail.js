@@ -34,7 +34,7 @@ export default function BusStopDetail({ isStaff, setIsStaff }) {
           <TableBody>
             {
               busStopDetail?.lines.map((line) => (
-                <TableRow key={line.id} className='tablerow' onClick={(event) => showStopLineSchedule(id, line.id)}>
+                <TableRow key={line.id} className='tablerow' hover onClick={(event) => showStopLineSchedule(id, line.id)}>
                   <TableCell >{line.id}</TableCell>
                   <TableCell>{line.name}</TableCell>
                 </TableRow>

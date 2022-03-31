@@ -124,14 +124,14 @@ export default function BusStopList({ isStaff, setIsStaff }) {
             <TableBody>
               {
                 busStops.map((stop) => (
-                  <TableRow key={stop.name} className='tablerow' >
+                  <TableRow key={stop.name} className='tablerow' hover onClick={(event) => showDetails(stop.id)}>
                     <TableCell>{stop.id}</TableCell>
-                    <TableCell onClick={(event) => showDetails(stop.id)}>{stop.name}</TableCell>
+                    <TableCell>{stop.name}</TableCell>
                     {isStaff &&
-                      <TableCell><Button variant="outlined" onClick={(event) => editBusStop(stop)} >Bearbeiten</Button></TableCell>
+                      <TableCell><Button variant="outlined" onClick={(event) => {event.stopPropagation(); editBusStop(stop)}} >Bearbeiten</Button></TableCell>
                     }
                     {isStaff &&
-                      <TableCell><Button onClick={(event) => deleteBusStop(stop)}>Löschen</Button></TableCell>
+                      <TableCell><Button onClick={(event) => {event.stopPropagation(); deleteBusStop(stop)}}>Löschen</Button></TableCell>
                     }
                   </TableRow>
                 ))
