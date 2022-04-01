@@ -14,7 +14,7 @@ export default function TimeTableSearch({ isStaff, setIsStaff }) {
     const [dateValue, setDateValue] = useState(moment());
     const [stops, setStops] = useState([]);
     const [showResult, setShowResult] = useState(false);
-    const [timespan, setTimespan] = useState(0);
+    const [timespan, setTimespan] = useState(0.5);
 
     useEffect(() => apiGetAllBusStops().then((result) => setStops(result)), []);
 
@@ -48,6 +48,7 @@ export default function TimeTableSearch({ isStaff, setIsStaff }) {
                             onChange={handleStopChange}
                             sx={{ width: 300 }}
                             renderInput={(params) => <TextField {...params} label="Haltestelle" />}
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
                         />
                         <LocalizationProvider dateAdapter={AdapterMoment} locale="de">
                             <DateTimePicker
@@ -64,7 +65,7 @@ export default function TimeTableSearch({ isStaff, setIsStaff }) {
                             label="Zeitspanne in h"
                             type="number"
                             value={timespan}
-                            error={timespan === 0}
+                            error={timespan <= 0}
                             InputLabelProps={{
                                 shrink: true,
                             }}
@@ -75,7 +76,7 @@ export default function TimeTableSearch({ isStaff, setIsStaff }) {
                                 sx={{ width: 150 }}
                                 variant="contained"
                                 onClick={(event) => setShowResult(true)}
-                                disabled={!stop}>Suchen</Button>
+                                disabled={!stop || timespan <= 0 || !dateValue.isValid() }>Suchen</Button>
                         </Box>
 
                     </Box>
@@ -84,7 +85,7 @@ export default function TimeTableSearch({ isStaff, setIsStaff }) {
                 {showResult &&
                     <TimeTableSearchResult
                         stop={stop}
-                        time={moment(dateValue).format()}
+                        time={dateValue}
                         timespan={timespan} />
                 }
 
