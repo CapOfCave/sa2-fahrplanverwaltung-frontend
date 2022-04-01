@@ -1,7 +1,7 @@
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { Autocomplete, Button, Divider, Paper, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Container, Divider, Paper, TextField } from "@mui/material";
 import moment from 'moment';
 import 'moment/locale/de';
 import { useEffect, useState } from "react";
@@ -34,53 +34,62 @@ export default function TimeTableSearch({ isStaff, setIsStaff }) {
     return (
         <div>
             <Header isStaff={isStaff} setIsStaff={setIsStaff} />
-            <Divider sx={{ width: '90%', marginLeft: "5%"}}>
-            <h1>Fahrplanauskunft</h1>
+            <Divider sx={{ width: '90%', marginLeft: "5%" }}>
+                <h1>Fahrplanauskunft</h1>
             </Divider>
-            <Paper sx={{ width: '90%', marginLeft: "5%"}}>
-            <form>
-                <Autocomplete
-                    disablePortal
-                    disableClearable
-                    options={stops}
-                    getOptionLabel={(option) => (option ? option.name : "")}
-                    onChange={handleStopChange}
-                    sx={{ width: 300, marginBottom: 3 }}
-                    renderInput={(params) => <TextField {...params} label="Haltestelle" />}
-                />
-                <LocalizationProvider dateAdapter={AdapterMoment} locale="de">
-                    <DateTimePicker
-                        label="Startzeit"
-                        mask="__.__.____ __:__"
-                        value={dateValue}
-                        onChange={handleDateChange}
-                        renderInput={(params) => <TextField {...params} />}
-                        sx={{ width: 300, marginBottom: 3 }}
-                    />
-                </LocalizationProvider>
-                <TextField
-                    id="outlined-number"
-                    label="Zeitspanne in h"
-                    type="number"
-                    value={timespan}
-                    error={timespan === 0}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    onChange={handleTimespanChange}
-                />
-                <Button 
-                variant="outlined" 
-                onClick={(event) => setShowResult(true)} 
-                disabled={!stop}>Suchen</Button>
+            <Container maxWidth="xl">
+                <form>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: '1.5rem', mb: '2rem' }}>
+                        <Autocomplete
+                            disablePortal
+                            disableClearable
+                            options={stops}
+                            getOptionLabel={(option) => (option ? option.name : "")}
+                            onChange={handleStopChange}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} label="Haltestelle" />}
+                        />
+                        <LocalizationProvider dateAdapter={AdapterMoment} locale="de">
+                            <DateTimePicker
+                                label="Startzeit"
+                                mask="__.__.____ __:__"
+                                value={dateValue}
+                                onChange={handleDateChange}
+                                renderInput={(params) => <TextField {...params} sx={{ width: 300, mr: '3rem' }} />}
+                                sx={{ width: 300, marginBottom: 3, mr: '3rem' }}
+                            />
+                        </LocalizationProvider>
+                        <TextField
+                            id="outlined-number"
+                            label="Zeitspanne in h"
+                            type="number"
+                            value={timespan}
+                            error={timespan === 0}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            onChange={handleTimespanChange}
+                        />
+                        <Box>
+                            <Button
+                                sx={{ width: 150 }}
+                                variant="contained"
+                                onClick={(event) => setShowResult(true)}
+                                disabled={!stop}>Suchen</Button>
+                        </Box>
+
+                    </Box>
+                </form>
+                <Divider sx={{ mb: '4rem' }} />
                 {showResult &&
-                    <TimeTableSearchResult 
-                    stop={stop} 
-                    time={moment(dateValue).format()} 
-                    timespan={timespan} />
+                    <TimeTableSearchResult
+                        stop={stop}
+                        time={moment(dateValue).format()}
+                        timespan={timespan} />
                 }
-            </form>
-            </Paper>
+
+            </Container>
+
         </div>
     );
 }
