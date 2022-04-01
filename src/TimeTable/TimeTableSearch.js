@@ -1,7 +1,7 @@
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { Autocomplete, Box, Button, Container, Divider, Paper, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Container, Divider, TextField } from "@mui/material";
 import moment from 'moment';
 import 'moment/locale/de';
 import { useEffect, useState } from "react";
